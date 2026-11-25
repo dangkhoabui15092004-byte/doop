@@ -146,7 +146,27 @@ export function App() {
   if (protoId && !signInRequired && !guestAuth)
     return (
       <ShellDragBar>
-        <PrototypePage canvasId={protoId} key={protoId} guest={!session} />
+        <PrototypePage
+          canvasId={protoId}
+          key={protoId}
+          guest={!session}
+          onSignIn={() => {
+            try {
+              sessionStorage.setItem('doop:protoOpenComments', protoId)
+            } catch {
+              /* ignore storage errors */
+            }
+            setGuestAuth('signin')
+          }}
+          onEdit={
+            session
+              ? undefined
+              : () => {
+                  history.pushState(null, '', `/c/${protoId}`)
+                  setGuestAuth('signin')
+                }
+          }
+        />
       </ShellDragBar>
     )
 
@@ -204,6 +224,20 @@ export function App() {
     return (
       <>
         <ShellDragBar />
+        {guestAuth && canvasId && (
+          <button
+            type="button"
+            onClick={() => {
+              const backTo = `/c/${canvasId}/proto`
+              history.replaceState(null, '', backTo)
+              setRoute(backTo)
+              setGuestAuth(null)
+            }}
+            className="fixed top-4 left-4 z-50 rounded-pill border border-line bg-surface px-3.5 py-1.5 text-xs font-medium text-ink shadow-pop transition-colors hover:bg-surface-2"
+          >
+            ← Quay lại màn demo
+          </button>
+        )}
         <AuthPage initialMode={guestAuth ?? undefined} />
       </>
     )

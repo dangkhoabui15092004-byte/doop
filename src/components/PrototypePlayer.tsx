@@ -29,6 +29,7 @@ import { IconButton } from './ui/icon-button'
 import { cn } from '@/lib/utils'
 import { Pressable } from './ui/pressable'
 import { PrototypeComments } from './PrototypeComments'
+import { ProtoComments } from './ProtoComments'
 import { CommentThreadLayer } from './FrameLabelLayer'
 import {
   ArrowLeftIcon,
@@ -97,13 +98,31 @@ export function PrototypePlayer({
   startFrameId,
   onClose,
   syncUrl = false,
+  guest = false,
+  onEdit,
+  onSignIn,
 }: {
   startFrameId: string
   onClose?: () => void
   syncUrl?: boolean
+  guest?: boolean
+  onEdit?: () => void
+  onSignIn?: () => void
 }) {
   const frames = useStore((s) => s.canvas?.frames)
   const canvasId = useStore((s) => s.canvas?.id)
+  const allComments = useStore((s) => s.comments)
+  const [protoCommentsOpen, setProtoCommentsOpen] = useState(() => {
+    try {
+      if (canvasId && sessionStorage.getItem('doop:protoOpenComments') === canvasId) {
+        sessionStorage.removeItem('doop:protoOpenComments')
+        return true
+      }
+    } catch {
+      /* ignore storage errors */
+    }
+    return false
+  })
   const frameById = useCallback((id: string) => frames?.find((f) => f.id === id), [frames])
   const t = useT()
 
@@ -556,6 +575,35 @@ export function PrototypePlayer({
               </IconButton>
             )}
             <ScalingMenu scaling={scaling} onChange={setScaling} />
+            {shownFrame && (
+              <button
+                type="button"
+                onClick={() => {
+                  setProtoCommentsOpen((v) => !v)
+                  if (commentsOn) toggleComments()
+                }}
+                className={cn(
+                  'ml-1 rounded-pill px-2.5 py-1 text-caption font-medium transition-colors',
+                  protoCommentsOpen
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-white/15 text-code-ink hover:bg-white/25',
+                )}
+              >
+                Góp ý
+                {allComments.filter((c) => c.frameId === shownFrame.id && !c.parentId && !c.resolvedAt).length > 0
+                  ? ` (${allComments.filter((c) => c.frameId === shownFrame.id && !c.parentId && !c.resolvedAt).length})`
+                  : ''}
+              </button>
+            )}
+            {!onClose && onEdit && (
+              <button
+                type="button"
+                onClick={onEdit}
+                className="ml-1 rounded-pill bg-white px-2.5 py-1 text-caption font-medium text-neutral-950 transition-colors hover:bg-white/90"
+              >
+                Chỉnh sửa
+              </button>
+            )}
             {onClose && canvasId && (
               <IconButton
                 size="sm"
@@ -660,6 +708,16 @@ export function PrototypePlayer({
             data-proto-comment=""
             onKeyDown={(e) => e.stopPropagation()}
           />
+          {shownFrame && (
+            <ProtoComments
+              frame={shownFrame}
+              layout={screenLayout(shownFrame, stage, scaling)}
+              open={protoCommentsOpen}
+              guest={guest}
+              onClose={() => setProtoCommentsOpen(false)}
+              onSignIn={onSignIn}
+            />
+          )}
           {notice && (
             <div className="absolute bottom-5 left-1/2 z-10 -translate-x-1/2 rounded-pill bg-black/70 px-3 py-1.5 text-body text-code-ink">
               {notice}

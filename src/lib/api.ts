@@ -965,6 +965,24 @@ export const api = {
       elementOrigin?: { x: number; y: number }
     },
   ) => req<ElementComment>(`/api/frames/${frameId}/comments`, { method: 'POST', body: JSON.stringify(input) }),
+  addGuestComment: (
+    frameId: string,
+    input: {
+      selector?: string
+      elementId?: string
+      snippet: string
+      text: string
+      guestName?: string
+      x: number
+      y: number
+      elementOrigin?: { x: number; y: number }
+    },
+  ) => req<ElementComment>(`/api/public/frames/${frameId}/comments`, { method: 'POST', body: JSON.stringify(input) }),
+  replyGuestComment: (commentId: string, text: string, guestName?: string) =>
+    req<ElementComment>(`/api/public/comments/${commentId}/replies`, {
+      method: 'POST',
+      body: JSON.stringify({ text, guestName }),
+    }),
   /** the stable id of the element a positional selector names, stamped into the frame if needed */
   ensureElementId: (frameId: string, selector: string, snippet?: string) =>
     req<{ elementId: string }>(`/api/frames/${frameId}/element-id`, {

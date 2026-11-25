@@ -1093,6 +1093,55 @@ declare global {
    whose session (if any) is not the app's: relay it back to the app before
    the gate looks at that session (shared/desktopConnect.ts) */
 app.get('/api/integrations/:provider/callback', relayDesktopCallback)
+/* Public guest comments on shared canvases (linkAccess 'comment' | 'edit') so
+   clients/BA can leave feedback on /proto without creating an account. */
+app.post(
+  '/api/public/frames/:id/comments',
+  writeRoute(async (req, res) => {
+    const frameMeta = store.getFrame(req.params.id)
+    if (!frameMeta) return res.status(404).json({ error: 'frame not found' })
+    const canvas = store.getCanvas(frameMeta.canvasId)
+    if (!canvas || (canvas.linkAccess !== 'comment' && canvas.linkAccess !== 'edit')) {
+      return res.status(403).json({ error: 'guest comments not allowed on this canvas' })
+    }
+    await store.load(canvas.id)
+    res.once('close', store.hold(canvas.id))
+    const { selector, elementId, snippet, x, y, elementOrigin } = req.body ?? {}
+    const text = String(req.body?.text ?? '').trim()
+    if (!text) return res.status(400).json({ error: 'empty text' })
+    const guestName = String(req.body?.guestName ?? '').trim().slice(0, 60) || 'Khách'
+    const comment = await actions.addElementComment(
+      req.params.id,
+      { selector, elementId, snippet, text, x, y, elementOrigin },
+      guestName,
+      undefined,
+    )
+    if (!comment) return res.status(404).json({ error: 'frame not found or empty text' })
+    res.json(comment)
+  }),
+)
+
+app.post('/api/public/comments/:id/replies', async (req, res, next) => {
+  try {
+    const found = actions.findComment(req.params.id)
+    if (!found) return res.status(404).json({ error: 'comment not found' })
+    const canvas = store.getCanvas(found.canvasId)
+    if (!canvas || (canvas.linkAccess !== 'comment' && canvas.linkAccess !== 'edit')) {
+      return res.status(403).json({ error: 'guest comments not allowed on this canvas' })
+    }
+    const text = String(req.body?.text ?? '').trim()
+    if (!text || !actions.openThread(req.params.id)) {
+      return res.status(404).json({ error: 'thread resolved or empty text' })
+    }
+    const guestName = String(req.body?.guestName ?? '').trim().slice(0, 60) || 'Khách'
+    const reply = actions.replyToComment(req.params.id, text, guestName, undefined, 'user')
+    if (!reply) return res.status(404).json({ error: 'thread resolved' })
+    res.json(reply)
+  } catch (err) {
+    next(err)
+  }
+})
+
 app.use('/api/live-activities', logLiveActivityRequests)
 app.use('/api', async (req, res, next) => {
   try {
