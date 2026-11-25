@@ -186,7 +186,9 @@ export function PrototypePlayer({
 
   /* comment mode (C, or the toolbar's bubble): clicks on the screen pin
      comments instead of playing the prototype */
-  const canComment = useStore(canCommentOpenCanvas)
+  const linkAccess = useStore((s) => s.canvas?.linkAccess)
+  const canComment =
+    useStore(canCommentOpenCanvas) || (guest && (linkAccess === 'comment' || linkAccess === 'edit'))
   const [commenting, setCommentingState] = useState(false)
   const commentingRef = useRef(false)
   const setCommenting = (next: boolean) => {
@@ -569,7 +571,10 @@ export function PrototypePlayer({
                 aria-pressed={commentsOn}
                 title={t('panels.protoCommentsTitle')}
                 data-proto-comments=""
-                onClick={() => toggleComments()}
+                onClick={() => {
+                  setProtoCommentsOpen(false)
+                  toggleComments()
+                }}
               >
                 <CommentIcon size="rail" />
               </IconButton>
@@ -666,6 +671,7 @@ export function PrototypePlayer({
                   layout={frame ? screenLayout(frame, stage, scaling) : undefined}
                   interactive={role !== 'from' && !overlays.length}
                   commenting={commentsOn && role === 'still' && !overlays.length}
+                  guest={guest}
                   onReady={onScreenReady}
                 />
               </div>
@@ -965,6 +971,7 @@ function ProtoScreen({
   onReady,
   onMessage,
   commenting,
+  guest = false,
 }: {
   entry: Entry
   frame: Frame | undefined
@@ -978,6 +985,7 @@ function ProtoScreen({
   onMessage: (data: { type?: string; interaction?: unknown; press?: boolean }) => void
   /** the top screen while the viewer comments: clicks pin comments */
   commenting: boolean
+  guest?: boolean
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [booted, setBooted] = useState(false)
@@ -1075,6 +1083,7 @@ function ProtoScreen({
         height={height}
         rendered={rendered}
         commenting={commenting}
+        guest={guest}
       />
     </div>
   )

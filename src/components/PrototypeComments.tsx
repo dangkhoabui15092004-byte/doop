@@ -61,6 +61,7 @@ export function PrototypeComments({
   height,
   rendered,
   commenting,
+  guest = false,
 }: {
   frame: Frame
   iframeRef: RefObject<HTMLIFrameElement | null>
@@ -71,6 +72,7 @@ export function PrototypeComments({
   /** bumped each time the screen's runtime has shown a new document */
   rendered: number
   commenting: boolean
+  guest?: boolean
 }) {
   const t = useT()
   const threadLayer = useContext(CommentThreadLayer)
@@ -175,20 +177,39 @@ export function PrototypeComments({
     win.postMessage({ type: 'doop:probe', reqId, x: point.x, y: point.y, grouped: false, selected: [] }, '*')
   }
 
+  function getGuestName() {
+    try {
+      return localStorage.getItem('doop:guestName')?.trim() || 'Khách'
+    } catch {
+      return 'Khách'
+    }
+  }
+
   function submit(text: string, mentions: string[]) {
     if (!compose) return
     const { hit, point } = compose
-    api
-      .addComment(frame.id, {
-        selector: hit.selector,
-        ...(hit.elementId ? { elementId: hit.elementId } : {}),
-        snippet: hit.snippet,
-        text,
-        mentions,
-        x: point.x,
-        y: point.y,
-        elementOrigin: { x: hit.rect.x, y: hit.rect.y },
-      })
+    const req = guest
+      ? api.addGuestComment(frame.id, {
+          selector: hit.selector,
+          ...(hit.elementId ? { elementId: hit.elementId } : {}),
+          snippet: hit.snippet,
+          text,
+          guestName: getGuestName(),
+          x: point.x,
+          y: point.y,
+          elementOrigin: { x: hit.rect.x, y: hit.rect.y },
+        })
+      : api.addComment(frame.id, {
+          selector: hit.selector,
+          ...(hit.elementId ? { elementId: hit.elementId } : {}),
+          snippet: hit.snippet,
+          text,
+          mentions,
+          x: point.x,
+          y: point.y,
+          elementOrigin: { x: hit.rect.x, y: hit.rect.y },
+        })
+    req
       .then(() => posthog.capture('element_comment_created', { via: 'prototype' }))
       .catch((err) => {
         if (isResidentLimit(err)) useStore.getState().setLimitWall(true)
@@ -248,8 +269,10 @@ export function PrototypeComments({
                   <CommentThread
                     thread={thread}
                     onReply={(text, mentions) =>
-                      api
-                        .replyComment(c.id, text, mentions)
+                      (guest
+                        ? api.replyGuestComment(c.id, text, getGuestName())
+                        : api.replyComment(c.id, text, mentions)
+                      )
                         .then(() => posthog.capture('element_comment_replied', { via: 'prototype' }))
                         .catch((err) => {
                           if (isResidentLimit(err)) useStore.getState().setLimitWall(true)
@@ -257,6 +280,7 @@ export function PrototypeComments({
                         })
                     }
                     onResolve={() => {
+                      if (guest) return
                       api
                         .resolveComment(c.id)
                         .then(() => posthog.capture('element_comment_resolved', { via: 'prototype' }))
