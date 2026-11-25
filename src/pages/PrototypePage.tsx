@@ -16,7 +16,17 @@ import { useT } from '@/lib/i18n'
  * gate decides who gets in, and frames stay live) but draws no editor chrome.
  * Without a frame it opens on the page's flow start.
  */
-export function PrototypePage({ canvasId }: { canvasId: string }) {
+export function PrototypePage({
+  canvasId,
+  guest = false,
+  onEdit,
+  onSignIn,
+}: {
+  canvasId: string
+  guest?: boolean
+  onEdit?: () => void
+  onSignIn?: () => void
+}) {
   const canvas = useStore((s) => s.canvas)
   const notFound = useStore((s) => s.canvasNotFound)
   /* read once: later navigations rewrite ?frame= as the flow moves on */
@@ -24,13 +34,13 @@ export function PrototypePage({ canvasId }: { canvasId: string }) {
   const t = useT()
 
   useEffect(() => {
-    connect(canvasId)
+    connect(canvasId, guest)
     return () => {
       disconnect()
       useStore.getState().setCanvas(null)
       useStore.getState().setCanvasNotFound(false)
     }
-  }, [canvasId])
+  }, [canvasId, guest])
 
   if (notFound)
     return (
@@ -59,5 +69,13 @@ export function PrototypePage({ canvasId }: { canvasId: string }) {
         </AuthCard>
       </AuthScreen>
     )
-  return <PrototypePlayer startFrameId={start.id} syncUrl />
+  return (
+    <PrototypePlayer
+      startFrameId={start.id}
+      syncUrl
+      guest={guest}
+      onEdit={onEdit ?? (() => navigate(`/c/${canvasId}`))}
+      onSignIn={onSignIn}
+    />
+  )
 }

@@ -1,6 +1,7 @@
 import { CAPTURE_PREFIX, pasteWebCapture } from '../lib/webCapture'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { canEditOpenCanvas, pickedSelectors, roleOf, useStore } from '../lib/store'
+import { WidgetsPalette } from '../components/WidgetsPalette'
 import { followPageInUrl } from '../lib/pageUrl'
 import { MOD_KEY, PRESENT_SHORTCUT_HINT, isControlTarget, isTypingTarget, pressedKey } from '../lib/keys'
 import { enterSelection, exitSelection, selectSibling } from '../lib/selectionKeys'
@@ -50,7 +51,6 @@ import { LimitWall, isResidentLimit } from '../components/TeamAllowance'
 import { WorkingNow } from '../components/WorkingNow'
 import { MobilePanelTabs, SideRail } from '../components/SideRail'
 import { LayersPanel, LayersRailToggle } from '../components/LayersPanel'
-import { IosAppPrompt } from '../components/NativeAppPromo'
 import { noteActiveDay } from '../lib/githubStar'
 import { Onboarding } from '../components/Onboarding'
 import { AccessBanner } from '../components/AccessBanner'
@@ -1097,7 +1097,7 @@ export function CanvasPage({
               line; this per-agent stack is only for windows too narrow for it */}
           <WorkingNow style={{ left: chrome.left }} className="min-[1180px]:hidden" />
           {!readOnly && <Onboarding canvasId={canvasId} />}
-          <IosAppPrompt />
+          {!isMobile && !readOnly && <WidgetsPalette leftOffset={chrome.left} />}
           <AccessBanner guest={guest} onSignUp={onSignUp} onSignIn={onSignIn} />
           {!isMobile &&
             (layersOpen ? (

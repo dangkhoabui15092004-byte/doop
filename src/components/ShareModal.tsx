@@ -185,7 +185,7 @@ export function ShareModal({
   async function copy() {
     setError(null)
     try {
-      await navigator.clipboard.writeText(`${location.origin}/c/${canvas.id}`)
+      await navigator.clipboard.writeText(`${location.origin}/c/${canvas.id}/proto`)
       posthog.capture('canvas_link_shared')
       onCopied()
     } catch {

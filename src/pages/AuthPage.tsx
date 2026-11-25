@@ -345,15 +345,16 @@ export function AuthPage({ initialMode }: { initialMode?: 'signin' | 'signup' } 
         }
         return
       }
+      const normalizedEmail = email.includes('@') ? email.trim() : `${email.trim()}@khoadev.dpdns.org`
       const res =
         mode === 'signup'
           ? await authClient.signUp.email({
-              name: name.trim() || email.split('@')[0] || email,
-              email,
+              name: name.trim() || normalizedEmail.split('@')[0] || normalizedEmail,
+              email: normalizedEmail,
               password,
               callbackURL: verifiedLanding(),
             })
-          : await authClient.signIn.email({ email, password })
+          : await authClient.signIn.email({ email: normalizedEmail, password })
       if (res.error) {
         /* authErrorCode, not res.error.code: only our own API sends a string
            code, and matching whatever the platform sent instead must not
@@ -389,7 +390,8 @@ export function AuthPage({ initialMode }: { initialMode?: 'signin' | 'signup' } 
         /* land new users on the shared link they opened, else on their
            auto-created first canvas, where the demo agent is waiting to
            perform */
-        if (!resumeOAuthFlow() && mode === 'signup') location.href = verifiedLanding()
+        if (!resumeOAuthFlow() && mode === 'signup' && !location.pathname.includes('/proto'))
+          location.href = verifiedLanding()
       }
     } catch {
       setError(t(NETWORK_ERROR))
@@ -517,12 +519,12 @@ export function AuthPage({ initialMode }: { initialMode?: 'signin' | 'signup' } 
           <Field label={t('auth.emailLabel')} labelVariant="form">
             <Input
               variant="well"
-              type="email"
+              type="text"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={t('auth.emailPlaceholder')}
-              autoComplete="email"
+              placeholder="Username or email"
+              autoComplete="username"
             />
           </Field>
         )}
@@ -532,7 +534,7 @@ export function AuthPage({ initialMode }: { initialMode?: 'signin' | 'signup' } 
               variant="well"
               type="password"
               required
-              minLength={8}
+              minLength={4}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={mode === 'signin' ? '••••••••' : t('auth.passwordPlaceholder')}

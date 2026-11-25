@@ -1,26 +1,26 @@
 import { startLocalAgent } from './lib/localAgent'
 import { navigate } from './lib/navigate'
-import { useEffect, useRef, useState } from 'react'
-import { Home } from './pages/Home'
-import { Community } from './pages/Community'
-import { Settings } from './pages/Settings'
-import { CanvasPage } from './pages/CanvasPage'
-import { PrototypePage } from './pages/PrototypePage'
-import { AuthPage } from './pages/AuthPage'
-import { DesktopHandoff } from './pages/DesktopHandoff'
-import { DesktopSignIn } from './pages/DesktopSignIn'
-import { DesktopConnect } from './pages/DesktopConnect'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { DESKTOP_CONNECT_PATH } from '../shared/desktopConnect'
-import { DesktopCodexSetup } from './pages/DesktopCodexSetup'
 import { CODEX_SETUP_PATH } from './lib/codexConnection'
-import { OAuthConsent } from './pages/OAuthConsent'
 import { DESKTOP_HANDOFF_PATH, DESKTOP_SIGNIN_PATH } from './lib/desktopAuth'
-import { Admin } from './pages/Admin'
-import { Automations } from './pages/Automations'
-import { AutomationEditor } from './pages/AutomationEditor'
-import { Integrations } from './pages/Integrations'
-import { Workspace } from './pages/Workspace'
-import { UpgradeHost } from './components/UpgradeHost'
+
+const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })))
+const Community = lazy(() => import('./pages/Community').then((m) => ({ default: m.Community })))
+const Settings = lazy(() => import('./pages/Settings').then((m) => ({ default: m.Settings })))
+const CanvasPage = lazy(() => import('./pages/CanvasPage').then((m) => ({ default: m.CanvasPage })))
+const PrototypePage = lazy(() => import('./pages/PrototypePage').then((m) => ({ default: m.PrototypePage })))
+const AuthPage = lazy(() => import('./pages/AuthPage').then((m) => ({ default: m.AuthPage })))
+const DesktopHandoff = lazy(() => import('./pages/DesktopHandoff').then((m) => ({ default: m.DesktopHandoff })))
+const DesktopSignIn = lazy(() => import('./pages/DesktopSignIn').then((m) => ({ default: m.DesktopSignIn })))
+const DesktopConnect = lazy(() => import('./pages/DesktopConnect').then((m) => ({ default: m.DesktopConnect })))
+const DesktopCodexSetup = lazy(() => import('./pages/DesktopCodexSetup').then((m) => ({ default: m.DesktopCodexSetup })))
+const OAuthConsent = lazy(() => import('./pages/OAuthConsent').then((m) => ({ default: m.OAuthConsent })))
+const Admin = lazy(() => import('./pages/Admin').then((m) => ({ default: m.Admin })))
+const Automations = lazy(() => import('./pages/Automations').then((m) => ({ default: m.Automations })))
+const AutomationEditor = lazy(() => import('./pages/AutomationEditor').then((m) => ({ default: m.AutomationEditor })))
+const Integrations = lazy(() => import('./pages/Integrations').then((m) => ({ default: m.Integrations })))
+const Workspace = lazy(() => import('./pages/Workspace').then((m) => ({ default: m.Workspace })))
 import { authClient } from './lib/auth'
 import { useStore } from './lib/store'
 import { setName } from './lib/identity'
@@ -54,6 +54,14 @@ function reportProviderSignup() {
 }
 
 export function App() {
+  return (
+    <Suspense fallback={<div className="fixed inset-0 bg-code" />}>
+      <AppInner />
+    </Suspense>
+  )
+}
+
+function AppInner() {
   const [route, setRoute] = useState(location.pathname + location.search)
   const path = route.split('?')[0]!
   const { data: session, isPending } = authClient.useSession()
@@ -134,6 +142,34 @@ export function App() {
     if (localAgentUser) return startLocalAgent(localAgentUser)
   }, [localAgentUser])
 
+  /* Render /c/<id>/proto immediately without blocking on get-session so
+     incognito/guest visitors don't see an AuthScreen flash that looks like a reload. */
+  const protoId = path.match(/^\/c\/([^/]+)\/proto\/?$/)?.[1]
+  if (protoId && !signInRequired && !guestAuth)
+    return (
+      <ShellDragBar>
+        <PrototypePage
+          canvasId={protoId}
+          key={protoId}
+          guest={!session}
+          onSignIn={() => {
+            try {
+              sessionStorage.setItem('doop:protoOpenComments', protoId)
+            } catch {}
+            setGuestAuth('signin')
+          }}
+          onEdit={
+            session
+              ? undefined
+              : () => {
+                  history.pushState(null, '', `/c/${protoId}`)
+                  setGuestAuth('signin')
+                }
+          }
+        />
+      </ShellDragBar>
+    )
+
   if (isPending)
     return (
       <>
@@ -163,10 +199,31 @@ export function App() {
       </>
     )
 
-  /* signed out on a canvas link: the canvas itself, read-only, as long as
-     the owner shared it by link (server: guestCanvasRole); a private one
-     refuses the join and lands on the sign-in form below. The prototype
-     player stays behind sign-in. */
+  /* signed out on a canvas or prototype link: read-only as long as the owner
+     shared it by link (server: guestCanvasRole); a private one refuses the
+     join and lands on the sign-in form below. */
+  const guestProtoOf = path.match(/^\/c\/([^/]+)\/proto\/?$/)?.[1]
+  if (!session && guestProtoOf && !signInRequired && !guestAuth)
+    return (
+      <ShellDragBar>
+        <PrototypePage
+          canvasId={guestProtoOf}
+          key={guestProtoOf}
+          guest
+          onSignIn={() => {
+            try {
+              sessionStorage.setItem('doop:protoOpenComments', guestProtoOf)
+            } catch {}
+            setGuestAuth('signin')
+          }}
+          onEdit={() => {
+            history.pushState(null, '', `/c/${guestProtoOf}`)
+            setGuestAuth('signin')
+          }}
+        />
+      </ShellDragBar>
+    )
+
   if (!session && canvasId && !path.includes('/proto') && !signInRequired && !guestAuth)
     return (
       <ShellDragBar>
@@ -188,6 +245,20 @@ export function App() {
     return (
       <>
         <ShellDragBar />
+        {guestAuth && canvasId && (
+          <button
+            type="button"
+            onClick={() => {
+              const backTo = `/c/${canvasId}/proto`
+              history.replaceState(null, '', backTo)
+              setRoute(backTo)
+              setGuestAuth(null)
+            }}
+            className="fixed top-4 left-4 z-50 rounded-pill border border-line bg-surface px-3.5 py-1.5 text-xs font-medium text-ink shadow-pop transition-colors hover:bg-surface-2"
+          >
+            ← Quay lại màn demo
+          </button>
+        )}
         <AuthPage initialMode={guestAuth ?? undefined} />
       </>
     )
@@ -227,12 +298,7 @@ export function App() {
   ) : (
     <Home />
   )
-  const page = (
-    <>
-      {screen}
-      <UpgradeHost />
-    </>
-  )
+  const page = screen
 
   /* The banner is not decoration: an impersonated session looks exactly like
      being signed in as that person, and forgetting you are in one is how

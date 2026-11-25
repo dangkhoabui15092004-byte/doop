@@ -31,6 +31,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { t as translate, useT } from '@/lib/i18n'
+import { ProtoComments } from './ProtoComments'
 
 /* One screen on the player's history stack: the frame it shows and how it
    arrived, so Back can play that transition in reverse. The key is unique per
@@ -76,13 +77,29 @@ export function PrototypePlayer({
   startFrameId,
   onClose,
   syncUrl = false,
+  guest = false,
+  onEdit,
+  onSignIn,
 }: {
   startFrameId: string
   onClose?: () => void
   syncUrl?: boolean
+  guest?: boolean
+  onEdit?: () => void
+  onSignIn?: () => void
 }) {
   const frames = useStore((s) => s.canvas?.frames)
   const canvasId = useStore((s) => s.canvas?.id)
+  const allComments = useStore((s) => s.comments)
+  const [commentsOpen, setCommentsOpen] = useState(() => {
+    try {
+      if (canvasId && sessionStorage.getItem('doop:protoOpenComments') === canvasId) {
+        sessionStorage.removeItem('doop:protoOpenComments')
+        return true
+      }
+    } catch {}
+    return false
+  })
   const frameById = useCallback((id: string) => frames?.find((f) => f.id === id), [frames])
   const t = useT()
 
@@ -98,6 +115,70 @@ export function PrototypePlayer({
   const [move, setMoveState] = useState<Move | null>(null)
   const [readyOverlays, setReadyOverlays] = useState<ReadonlySet<number>>(() => new Set())
   const [notice, setNotice] = useState<string | null>(null)
+  const barRef = useRef<HTMLDivElement>(null)
+  const [barPos, setBarPos] = useState<{ x: number; y: number } | null>(() => {
+    try {
+      const raw = localStorage.getItem('doop:protoBarPos')
+      if (!raw) return null
+      const parsed = JSON.parse(raw)
+      if (typeof parsed?.x === 'number' && typeof parsed?.y === 'number') return parsed
+    } catch {}
+    return null
+  })
+  const barDrag = useRef<{ pointerId: number; offsetX: number; offsetY: number } | null>(null)
+  const [barDragging, setBarDragging] = useState(false)
+
+  const onBarPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return
+    const target = e.target instanceof Element ? e.target : null
+    if (target?.closest('button, a, input, [role="menuitem"]')) return
+    const bar = barRef.current
+    const root = rootRef.current
+    if (!bar || !root) return
+    const barRect = bar.getBoundingClientRect()
+    const rootRect = root.getBoundingClientRect()
+    barDrag.current = {
+      pointerId: e.pointerId,
+      offsetX: e.clientX - barRect.left,
+      offsetY: e.clientY - barRect.top,
+    }
+    setBarDragging(true)
+    bar.setPointerCapture(e.pointerId)
+    setBarPos({
+      x: barRect.left - rootRect.left,
+      y: barRect.top - rootRect.top,
+    })
+  }
+
+  const onBarPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const drag = barDrag.current
+    const bar = barRef.current
+    const root = rootRef.current
+    if (!drag || drag.pointerId !== e.pointerId || !bar || !root) return
+    const rootRect = root.getBoundingClientRect()
+    const barRect = bar.getBoundingClientRect()
+    const pad = 8
+    const maxX = Math.max(pad, rootRect.width - barRect.width - pad)
+    const maxY = Math.max(pad, rootRect.height - barRect.height - pad)
+    const nextX = Math.min(maxX, Math.max(pad, e.clientX - rootRect.left - drag.offsetX))
+    const nextY = Math.min(maxY, Math.max(pad, e.clientY - rootRect.top - drag.offsetY))
+    setBarPos({ x: nextX, y: nextY })
+  }
+
+  const onBarPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const drag = barDrag.current
+    if (!drag || drag.pointerId !== e.pointerId) return
+    barDrag.current = null
+    setBarDragging(false)
+    try {
+      barRef.current?.releasePointerCapture(e.pointerId)
+    } catch {}
+    if (barPos) {
+      try {
+        localStorage.setItem('doop:protoBarPos', JSON.stringify(barPos))
+      } catch {}
+    }
+  }
   /* the handlers below run from message listeners: they read the latest
      state through these refs, written together with the state */
   const stackRef = useRef(stack)
@@ -494,8 +575,40 @@ export function PrototypePlayer({
         )
       })}
 
-      <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-pill bg-black/55 p-1 text-code-ink opacity-70 backdrop-blur-[6px] transition-opacity duration-150 hover:opacity-100 focus-within:opacity-100">
-        <span className="max-w-[180px] truncate px-2 text-caption text-code-ink/80" data-proto-current="">
+      <div
+        ref={barRef}
+        onPointerDown={onBarPointerDown}
+        onPointerMove={onBarPointerMove}
+        onPointerUp={onBarPointerUp}
+        onPointerCancel={onBarPointerUp}
+        onDoubleClick={(e) => {
+          const target = e.target instanceof Element ? e.target : null
+          if (target?.closest('button, a, input')) return
+          setBarPos(null)
+          try {
+            localStorage.removeItem('doop:protoBarPos')
+          } catch {}
+        }}
+        style={
+          barPos
+            ? {
+                left: `${Math.min(Math.max(8, barPos.x), Math.max(8, viewport.w - 160))}px`,
+                top: `${Math.min(Math.max(8, barPos.y), Math.max(8, viewport.h - 48))}px`,
+              }
+            : undefined
+        }
+        className={`absolute z-10 flex select-none items-center gap-1 rounded-pill bg-black/65 p-1 text-code-ink backdrop-blur-[6px] transition-opacity duration-150 ${
+          barPos ? '' : 'bottom-3 left-1/2 -translate-x-1/2'
+        } ${barDragging ? 'cursor-grabbing opacity-100' : 'cursor-grab opacity-80 hover:opacity-100 focus-within:opacity-100'}`}
+        title="Kéo để di chuyển (nhấp đúp để về giữa dưới)"
+      >
+        <span
+          aria-hidden="true"
+          className="pl-1.5 pr-0.5 text-[11px] leading-none tracking-[-1px] text-code-ink/45"
+        >
+          ⋮⋮
+        </span>
+        <span className="max-w-[180px] truncate px-1.5 text-caption text-code-ink/80" data-proto-current="">
           {shownFrame?.name ?? t('panels.protoMissing')}
         </span>
         <IconButton
@@ -524,6 +637,31 @@ export function PrototypePlayer({
             <ExportIcon size="rail" />
           </IconButton>
         )}
+        {shownFrame && (
+          <button
+            type="button"
+            onClick={() => setCommentsOpen((v) => !v)}
+            className={`ml-1 rounded-pill px-2.5 py-1 text-caption font-medium transition-colors ${
+              commentsOpen
+                ? 'bg-blue-600 text-white'
+                : 'bg-white/15 text-code-ink hover:bg-white/25'
+            }`}
+          >
+            Góp ý
+            {allComments.filter((c) => c.frameId === shownFrame.id && !c.parentId && !c.resolvedAt).length > 0
+              ? ` (${allComments.filter((c) => c.frameId === shownFrame.id && !c.parentId && !c.resolvedAt).length})`
+              : ''}
+          </button>
+        )}
+        {!onClose && onEdit && (
+          <button
+            type="button"
+            onClick={onEdit}
+            className="ml-1 rounded-pill bg-white px-2.5 py-1 text-caption font-medium text-neutral-950 transition-colors hover:bg-white/90"
+          >
+            Chỉnh sửa
+          </button>
+        )}
         {onClose && (
           <IconButton
             size="sm"
@@ -536,8 +674,18 @@ export function PrototypePlayer({
           </IconButton>
         )}
       </div>
+      {shownFrame && (
+        <ProtoComments
+          frame={shownFrame}
+          layout={screenLayout(shownFrame, viewport, scaling)}
+          open={commentsOpen}
+          guest={guest}
+          onClose={() => setCommentsOpen(false)}
+          onSignIn={onSignIn}
+        />
+      )}
       {notice && (
-        <div className="absolute bottom-5 left-1/2 z-10 -translate-x-1/2 rounded-pill bg-black/70 px-3 py-1.5 text-body text-code-ink">
+        <div className="absolute bottom-16 left-1/2 z-10 -translate-x-1/2 rounded-pill bg-black/70 px-3 py-1.5 text-body text-code-ink">
           {notice}
         </div>
       )}
