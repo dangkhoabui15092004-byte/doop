@@ -456,6 +456,7 @@ function buildAuth() {
        REQUIRE_EMAIL_VERIFICATION hasn't been turned off (see above). */
     emailAndPassword: {
       enabled: true,
+      minPasswordLength: 4,
       requireEmailVerification: REQUIRE_VERIFICATION,
       sendResetPassword: async ({ user, url }) => {
         await sendMail({

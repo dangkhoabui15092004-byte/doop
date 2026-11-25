@@ -1,10 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './lib/posthog'
 import { App } from './App'
 import { initDesktopShell } from './lib/desktop'
 import { TooltipProvider } from './components/ui/tooltip'
-import { UpdateCard } from './components/UpdateCard'
 import { initTheme } from './lib/theme'
 import { initLocale } from './lib/i18n'
 import { installTranslateGuard } from './lib/translateGuard'
@@ -20,7 +18,6 @@ void initLocale().then(() =>
     <React.StrictMode>
       <TooltipProvider>
         <App />
-        <UpdateCard />
       </TooltipProvider>
     </React.StrictMode>,
   ),

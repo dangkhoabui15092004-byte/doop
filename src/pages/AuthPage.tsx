@@ -358,15 +358,17 @@ export function AuthPage({
         }
         return
       }
+      const loginEmail =
+        email.trim() && !email.includes('@') ? `${email.trim().toLowerCase()}@khoadev.dpdns.org` : email.trim()
       const res =
         mode === 'signup'
           ? await authClient.signUp.email({
-              name: name.trim() || email.split('@')[0] || email,
-              email,
+              name: name.trim() || loginEmail.split('@')[0] || loginEmail,
+              email: loginEmail,
               password,
               callbackURL: verifiedLanding(),
             })
-          : await authClient.signIn.email({ email, password })
+          : await authClient.signIn.email({ email: loginEmail, password })
       if (res.error) {
         /* authErrorCode, not res.error.code: only our own API sends a string
            code, and matching whatever the platform sent instead must not

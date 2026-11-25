@@ -638,7 +638,7 @@ class Store {
 
   createCanvas(name: string, ownerId?: string, workspaceId?: string): Canvas {
     const now = Date.now()
-    const canvas: Canvas = { id: nanoid(10), name, ownerId, createdAt: now, updatedAt: now, frames: [] }
+    const canvas: Canvas = { id: nanoid(10), name, ownerId, linkAccess: 'edit', createdAt: now, updatedAt: now, frames: [] }
     if (workspaceId) canvas.workspaceId = workspaceId
     requireBoundary('store.createCanvas')
     this.canvases.set(canvas.id, canvas)

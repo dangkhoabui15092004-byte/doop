@@ -56,7 +56,7 @@ import { getImage } from './previews.ts'
 import { LayerNotFoundError, layerRefFromQuery, layerSelector } from './layerExport.ts'
 import * as actions from './actions.ts'
 import { captureFeature, captureTokenResults } from './featureEvents.ts'
-import { liveActivitiesRouter, logLiveActivityRequests, startLiveActivityDelivery } from './liveActivities.ts'
+import { liveActivitiesRouter, logLiveActivityRequests } from './liveActivities.ts'
 import { onCanvasEvent } from './events.ts'
 import * as imageDescriptions from './imageDescriptions.ts'
 import * as commentNotifications from './commentNotifications.ts'
@@ -1495,7 +1495,7 @@ app.use('/api/automations', automationsRouter)
 app.use('/api/integrations', integrationsRouter)
 app.use('/api/workspaces', workspaces.workspacesRouter)
 app.use('/api/live-activities', liveActivitiesRouter)
-startLiveActivityDelivery()
+// startLiveActivityDelivery() — disabled for self-hosted web-only deployment
 app.use('/api/billing', billing.billingRouter)
 
 /* free-tier meter for the resident team: {used, limit, connected, byoModel} */

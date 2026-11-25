@@ -54,6 +54,7 @@ import { MobileGuestSheet } from '../components/MobileGuestSheet'
 import { useCanvasAppBanner } from '../lib/nativeApp'
 import { noteActiveDay } from '../lib/githubStar'
 import { Onboarding } from '../components/Onboarding'
+import { WidgetsPalette } from '../components/WidgetsPalette'
 import { AccessBanner } from '../components/AccessBanner'
 import { ShareModal } from '../components/ShareModal'
 import { ExportModal } from '../components/ExportModal'
@@ -1113,6 +1114,7 @@ export function CanvasPage({
               line; this per-agent stack is only for windows too narrow for it */}
           <WorkingNow style={{ left: chrome.left }} className="min-[1180px]:hidden" />
           {!readOnly && <Onboarding canvasId={canvasId} />}
+          {!isMobile && !readOnly && <WidgetsPalette leftOffset={chrome.left} />}
           {!mobileGuest && <AccessBanner guest={guest} onSignUp={onSignUp} onSignIn={onSignIn} />}
           {!isMobile &&
             (layersOpen ? (

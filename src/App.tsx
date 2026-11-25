@@ -141,6 +141,15 @@ export function App() {
     if (localAgentUser) return startLocalAgent(localAgentUser)
   }, [localAgentUser])
 
+  /* Render /c/<id>/proto immediately (guests + logged-in) without AuthScreen flash */
+  const protoId = path.match(/^\/c\/([^/]+)\/proto\/?$/)?.[1]
+  if (protoId && !signInRequired && !guestAuth)
+    return (
+      <ShellDragBar>
+        <PrototypePage canvasId={protoId} key={protoId} guest={!session} />
+      </ShellDragBar>
+    )
+
   if (isPending && !sessionChecked)
     return (
       <>
@@ -239,7 +248,6 @@ export function App() {
   const page = (
     <>
       {screen}
-      <UpgradeHost />
       <FeedbackHost />
     </>
   )

@@ -1,13 +1,14 @@
 import { build } from 'esbuild'
 import { mkdir } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
 
 /* The Storybook CLI (cli/doop-storybook.ts) as one file Doop serves at /cli/doop-storybook.mjs,
    for a Storybook only the developer's machine reaches. Spec: .context/specs/storybook-import.md. */
 const out = new URL('../public/cli/', import.meta.url)
 await mkdir(out, { recursive: true })
 await build({
-  entryPoints: [new URL('../cli/doop-storybook.ts', import.meta.url).pathname],
-  outfile: new URL('doop-storybook.mjs', out).pathname,
+  entryPoints: [fileURLToPath(new URL('../cli/doop-storybook.ts', import.meta.url))],
+  outfile: fileURLToPath(new URL('doop-storybook.mjs', out)),
   bundle: true,
   platform: 'node',
   format: 'esm',
