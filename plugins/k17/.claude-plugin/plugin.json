@@ -1,0 +1,13 @@
+{
+  "name": "k17",
+  "version": "1.0.0",
+  "description": "Create, inspect, and refine HTML designs on a shared K17 canvas with Claude.",
+  "author": {
+    "name": "K17"
+  },
+  "homepage": "https://k17.dpdns.org",
+  "repository": "https://github.com/dangkhoabui15092004-byte/doop",
+  "license": "AGPL-3.0-only",
+  "keywords": ["design", "canvas", "html", "prototype", "mcp", "k17"],
+  "mcpServers": "./.mcp.json"
+}

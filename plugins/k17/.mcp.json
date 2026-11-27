@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "k17": {
+      "type": "http",
+      "url": "https://k17.dpdns.org/mcp"
+    }
+  }
+}
