@@ -538,11 +538,11 @@ export function AuthPage({
           <Field label={t('auth.emailLabel')} labelVariant="form">
             <Input
               variant="well"
-              type="email"
+              type="text"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder={t('auth.emailPlaceholder')}
+              placeholder="Username or email"
               autoComplete="email"
             />
           </Field>
