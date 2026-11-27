@@ -344,7 +344,7 @@ export function HomeHero({
         </div>
         <Pressable
           focus="ring"
-          onClick={actions.onIntegrations}
+          onClick={actions.onImport}
           className="group mx-[14px] flex w-[calc(100%-28px)] items-center rounded-b-card bg-sub px-5 pb-2.5 pt-3 text-body text-ink-soft transition-colors hover:text-ink"
         >
           {t('home.connectDesigns')}
