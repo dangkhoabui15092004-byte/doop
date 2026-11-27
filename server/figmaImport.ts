@@ -163,21 +163,34 @@ export function createFigmaRouter(deps: {
       const targets: Array<{ id: string; name: string; width: number; height: number }> = []
       if (parsed.nodeId) {
         const nr = await fetch(
-          `https://api.figma.com/v1/files/${parsed.fileKey}/nodes?ids=${encodeURIComponent(parsed.nodeId)}`,
+          `https://api.figma.com/v1/files/${parsed.fileKey}/nodes?ids=${encodeURIComponent(parsed.nodeId)}&depth=2`,
           { headers },
         )
         if (!nr.ok) return res.status(400).json({ error: `Figma API lỗi (${nr.status}) — kiểm tra quyền truy cập file` })
-        const nj = (await nr.json()) as {
-          nodes?: Record<string, { document?: { id: string; name: string; absoluteBoundingBox?: { width: number; height: number } } }>
+        type FigmaNode = {
+          id: string
+          name: string
+          type?: string
+          absoluteBoundingBox?: { width: number; height: number }
+          children?: FigmaNode[]
         }
+        const nj = (await nr.json()) as { nodes?: Record<string, { document?: FigmaNode }> }
         const doc = nj.nodes?.[parsed.nodeId]?.document
         if (!doc) return res.status(404).json({ error: 'Không tìm thấy frame/node trong file Figma này' })
-        targets.push({
-          id: doc.id,
-          name: doc.name || 'Figma Frame',
-          width: Math.max(320, Math.min(2400, Math.round(doc.absoluteBoundingBox?.width ?? 1440))),
-          height: Math.max(320, Math.min(3200, Math.round(doc.absoluteBoundingBox?.height ?? 900))),
-        })
+        // If user linked a Figma Page (CANVAS) or Section containing frames, import each child frame separately!
+        const childFrames =
+          doc.type === 'CANVAS' || doc.type === 'SECTION'
+            ? (doc.children ?? []).filter((c) => c.type === 'FRAME' || c.type === 'COMPONENT').slice(0, 12)
+            : []
+        const list = childFrames.length > 0 ? childFrames : [doc]
+        for (const item of list) {
+          targets.push({
+            id: item.id,
+            name: item.name || 'Figma Frame',
+            width: Math.max(320, Math.min(2400, Math.round(item.absoluteBoundingBox?.width ?? 1440))),
+            height: Math.max(320, Math.min(3200, Math.round(item.absoluteBoundingBox?.height ?? 900))),
+          })
+        }
       } else {
         const fr = await fetch(`https://api.figma.com/v1/files/${parsed.fileKey}?depth=2`, { headers })
         if (!fr.ok) return res.status(400).json({ error: `Figma API lỗi (${fr.status})` })
