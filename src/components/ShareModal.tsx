@@ -346,16 +346,6 @@ export function ShareModal({
             {t('panels.shareLinkSharingOff', { name: workspace.name })}
           </p>
         )}
-        {isOwner && !sharingOff && (
-          <CommunityListing canvas={canvas} busy={busy} setBusy={setBusy} setError={setError} onChange={onChange} />
-        )}
-        {upgrade && (
-          <UpgradeModal
-            workspaceId={upgrade}
-            reason={t('panels.shareUpgradeReason')}
-            onClose={() => setUpgrade(null)}
-          />
-        )}
       </>
     </Modal>
   )

@@ -5,10 +5,8 @@ import { EDITOR_CONNECT_PATH } from '../shared/editorConnect'
 import { DESKTOP_CONNECT_PATH } from '../shared/desktopConnect'
 import { CODEX_SETUP_PATH } from './lib/codexConnection'
 import { DESKTOP_HANDOFF_PATH, DESKTOP_SIGNIN_PATH } from './lib/desktopAuth'
-import { FeedbackHost } from './components/FeedbackModal'
 
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })))
-const Community = lazy(() => import('./pages/Community').then((m) => ({ default: m.Community })))
 const Settings = lazy(() => import('./pages/Settings').then((m) => ({ default: m.Settings })))
 const CanvasPage = lazy(() => import('./pages/CanvasPage').then((m) => ({ default: m.CanvasPage })))
 const PrototypePage = lazy(() => import('./pages/PrototypePage').then((m) => ({ default: m.PrototypePage })))
@@ -20,9 +18,6 @@ const DesktopConnect = lazy(() => import('./pages/DesktopConnect').then((m) => (
 const DesktopCodexSetup = lazy(() => import('./pages/DesktopCodexSetup').then((m) => ({ default: m.DesktopCodexSetup })))
 const OAuthConsent = lazy(() => import('./pages/OAuthConsent').then((m) => ({ default: m.OAuthConsent })))
 const Admin = lazy(() => import('./pages/Admin').then((m) => ({ default: m.Admin })))
-const Automations = lazy(() => import('./pages/Automations').then((m) => ({ default: m.Automations })))
-const AutomationEditor = lazy(() => import('./pages/AutomationEditor').then((m) => ({ default: m.AutomationEditor })))
-const Integrations = lazy(() => import('./pages/Integrations').then((m) => ({ default: m.Integrations })))
 const Workspace = lazy(() => import('./pages/Workspace').then((m) => ({ default: m.Workspace })))
 import { authClient } from './lib/auth'
 import { useStore } from './lib/store'
@@ -274,25 +269,12 @@ function AppInner() {
     <Admin />
   ) : path.startsWith('/settings') ? (
     <Settings />
-  ) : path.startsWith('/community') ? (
-    <Community />
-  ) : path.startsWith('/integrations') ? (
-    <Integrations />
   ) : path.match(/^\/w\/([^/]+)/) ? (
     <Workspace workspaceId={path.match(/^\/w\/([^/]+)/)![1]!} key={path} />
-  ) : path.match(/^\/automations\/([^/]+)/) ? (
-    <AutomationEditor automationId={path.match(/^\/automations\/([^/]+)/)![1]!} key={path} />
-  ) : path.startsWith('/automations') ? (
-    <Automations />
   ) : (
     <Home />
   )
-  const page = (
-    <>
-      {screen}
-      <FeedbackHost />
-    </>
-  )
+  const page = screen
 
   /* The banner is not decoration: an impersonated session looks exactly like
      being signed in as that person, and forgetting you are in one is how

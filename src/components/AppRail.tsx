@@ -73,7 +73,7 @@ export type RailActive =
 /** the Workspace page's panes, in the order the rail lists them */
 export type WorkspacePane = 'members' | 'fonts' | 'agents' | 'libraries' | 'billing' | 'general'
 
-const WORKSPACE_PANES: readonly WorkspacePane[] = ['members', 'fonts', 'agents', 'libraries', 'billing', 'general']
+const WORKSPACE_PANES: readonly WorkspacePane[] = ['members', 'fonts', 'agents', 'libraries', 'general']
 
 /** the panes a workspace role may open: billing and settings are for its owner and admins */
 export function workspacePanesFor(role: WorkspaceSummary['role'] | undefined): WorkspacePane[] {
@@ -348,20 +348,6 @@ export function AppRail({
         <FolderPlusIcon size="rail" />
       </IconButton>
       <Rule />
-      <IconButton aria-label={t('rail.community')} on={active === 'community'} onClick={() => go('/community')}>
-        <WebIcon size="rail" />
-      </IconButton>
-      <IconButton aria-label={t('rail.automations')} on={active === 'automations'} onClick={() => go('/automations')}>
-        <WorkflowIcon size="rail" />
-      </IconButton>
-      <IconButton
-        aria-label={t('rail.integrations')}
-        on={active === 'integrations'}
-        onClick={() => go('/integrations')}
-      >
-        <BlocksIcon size="rail" />
-      </IconButton>
-      <Rule />
       {agents.map((a) => (
         <span key={a.name} className="grid size-8 place-items-center" title={a.name}>
           <AgentTile name={a.name} />
@@ -496,38 +482,6 @@ export function AppRail({
         ))}
         <DashNavItem density="rail" icon={<FolderPlusIcon size="rail" />} onClick={createWorkspace}>
           {spaces.length ? t('rail.newWorkspace') : t('rail.createWorkspace')}
-        </DashNavItem>
-      </nav>
-
-      <DashSectionLabel density="rail">{t('rail.explore')}</DashSectionLabel>
-      <nav className="flex flex-col gap-0.5">
-        <DashNavItem
-          density="rail"
-          icon={<WebIcon size="rail" />}
-          active={active === 'community'}
-          onClick={() => go('/community')}
-        >
-          {t('rail.community')}
-        </DashNavItem>
-      </nav>
-
-      <DashSectionLabel density="rail">{t('rail.resources')}</DashSectionLabel>
-      <nav className="flex flex-col gap-0.5">
-        <DashNavItem
-          density="rail"
-          icon={<WorkflowIcon size="rail" />}
-          active={active === 'automations'}
-          onClick={() => go('/automations')}
-        >
-          {t('rail.automations')}
-        </DashNavItem>
-        <DashNavItem
-          density="rail"
-          icon={<BlocksIcon size="rail" />}
-          active={active === 'integrations'}
-          onClick={() => go('/integrations')}
-        >
-          {t('rail.integrations')}
         </DashNavItem>
       </nav>
 
