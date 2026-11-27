@@ -7,7 +7,7 @@ import { Logo } from '../Logo'
 function Wordmark({
   size = 'md',
   className,
-  children = 'Doop',
+  children = 'K17',
   ...props
 }: React.ComponentProps<'span'> & { size?: 'sm' | 'md' }) {
   return (

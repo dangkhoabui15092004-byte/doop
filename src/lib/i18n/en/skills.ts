@@ -1,4 +1,4 @@
-/** The skills card (Settings → Doop Agent, Workspace → Agents). */
+/** The skills card (Settings → K17 Agent, Workspace → Agents). */
 export const skills = {
   title: 'Skills',
   descriptionWorkspace: 'Instructions everyone in this workspace can ask for by name, on any of its canvases.',
@@ -33,7 +33,7 @@ export const skills = {
   saveFailed: 'Could not save the skill.',
   removeFailed: 'Could not remove the skill.',
   menuLabel: 'Skills',
-  menuEmpty: 'No skills here yet. Add them in Settings → Doop Agent, or in the workspace’s Agents page.',
+  menuEmpty: 'No skills here yet. Add them in Settings → K17 Agent, or in the workspace’s Agents page.',
   menuEmptyShort: 'No skills here yet.',
   menuNew: 'New skill',
   menuButton: 'Skills (/)',

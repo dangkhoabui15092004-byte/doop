@@ -9,10 +9,18 @@ export function Logo({ className = 'size-[30px]' }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 200 200" aria-hidden>
       <rect width="200" height="200" rx="48" fill="#111110" />
-      <g fill="#fdfdfc" transform="translate(14,0)">
-        <path d="M78 36 A 64 64 0 0 1 78 164 Z" />
-        <circle cx="50" cy="146" r="19" />
-      </g>
+      <text
+        x="100"
+        y="128"
+        textAnchor="middle"
+        fontFamily="Inter, system-ui, -apple-system, sans-serif"
+        fontWeight="800"
+        fontSize="82"
+        letterSpacing="-4"
+        fill="#fdfdfc"
+      >
+        K17
+      </text>
     </svg>
   )
 }

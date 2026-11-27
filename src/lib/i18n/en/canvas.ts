@@ -55,10 +55,10 @@ export const canvas = {
   itemsImported: { one: '{count} item imported', other: '{count} items imported' },
   importedWithFailures: '{imported} · {failed} failed',
   framesImporting: {
-    one: 'Importing {count} frame — Doop is on it',
-    other: 'Importing {count} frames — Doop is on it',
+    one: 'Importing {count} frame — K17 is on it',
+    other: 'Importing {count} frames — K17 is on it',
   },
-  cardsQueued: { one: '{count} card queued — Doop is on it', other: '{count} cards queued — Doop is on it' },
+  cardsQueued: { one: '{count} card queued — K17 is on it', other: '{count} cards queued — K17 is on it' },
   cardsQueuedPlan: {
     one: '{count} card queued — your desktop’s Claude is on it',
     other: '{count} cards queued — your desktop’s Claude is on it',
@@ -69,7 +69,7 @@ export const canvas = {
   },
   cardFailed: '“{card}” failed: {reason}',
   cardsFailed: '{count} cards failed: {reason}',
-  appUpdated: 'doop was updated',
+  appUpdated: 'K17 was updated',
   reload: 'Reload',
 
   /* canvas not found */
@@ -98,8 +98,8 @@ export const canvas = {
   docs: 'Docs',
   contactSupport: 'Contact support',
   youAre: 'You are “{name}” — click to change your name',
-  agents: 'Agents · ⌘/ to ask the Doop Agent',
-  agentsWorking: 'Agents · {working} working · ⌘/ to ask the Doop Agent',
+  agents: 'Agents · ⌘/ to ask the K17 Agent',
+  agentsWorking: 'Agents · {working} working · ⌘/ to ask the K17 Agent',
   comments: 'Comments',
   commentsOpen: 'Comments · {open} open',
   activity: 'Activity',
@@ -174,7 +174,7 @@ export const canvas = {
   repoTitle: 'Import the design system',
   repoFramework: 'A {framework} app.',
   repoLede:
-    "Doop distills the repo's design system into a style guide pinned to this canvas — every agent follows it from then on. Each component or page you pick becomes a card on the board: Doop sketches it from the source and lands it as a frame. Whole pages are optional.",
+    "K17 distills the repo's design system into a style guide pinned to this canvas — every agent follows it from then on. Each component or page you pick becomes a card on the board: K17 sketches it from the source and lands it as a frame. Whole pages are optional.",
   extractTitle: 'Extract the design system into a style guide',
   extractDescription:
     "Palette, type and spacing from the repo's theme — pinned to the canvas, followed by every agent.",
@@ -186,7 +186,7 @@ export const canvas = {
   hidePages: 'hide pages',
   showPages: { one: 'show {count} page (optional)', other: 'show {count} pages (optional)' },
   repoTruncated: 'The repository listing was cut short — very large repos show a subset.',
-  repoImporting: 'Doop is importing — the style guide and sketches fill in on the canvas…',
+  repoImporting: 'K17 is importing — the style guide and sketches fill in on the canvas…',
   repoImport: 'Import {items}',
   repoPieceSystem: 'design system',
   repoPieceComponents: { one: '{count} component', other: '{count} components' },
@@ -197,14 +197,14 @@ export const canvas = {
   repoGuideConnectTitle: 'Who should build this?',
   repoGuideConnectLede:
     'Rebuilding screens from source code needs an AI. Pick one, and this import carries on from here.',
-  repoGuidePlanTitle: 'Connect a plan, and Doop builds it',
+  repoGuidePlanTitle: 'Connect a plan, and K17 builds it',
   repoGuidePlanDescription: 'Your ChatGPT subscription, an API key, or Claude in the desktop app. Then import again.',
   repoGuideAgentTitle: 'Use your own agent',
   repoGuideAgentDescription: 'Claude Code, Codex, Cursor or Claude: you prompt it, and it builds the screens here.',
   repoForAgentTitle: 'Queued for {agent}',
-  repoForAgentLede: '{agent} builds these cards: it reads the repo through Doop and lands each screen on this canvas.',
+  repoForAgentLede: '{agent} builds these cards: it reads the repo through K17 and lands each screen on this canvas.',
   repoForAgentStepOpenLink: 'Open {agent} with the prompt filled in, and send it.',
-  repoForAgentStepPaste: 'Paste this into the agent you connected to Doop.',
+  repoForAgentStepPaste: 'Paste this into the agent you connected to K17.',
   repoForAgentStepRun: 'Run this in a terminal to start {agent} on the cards.',
   repoForAgentStepWatch: 'Screens land on this canvas as it works.',
   repoForAgentOpen: 'Open in {agent}',
@@ -257,13 +257,13 @@ export const canvas = {
   syncStep3Title: 'Browse the app',
   syncStep3Detail: 'Every new screen someone visits lands as a frame. Delete a frame to re-import it fresh.',
   syncNote:
-    'Visible page content uploads to Doop as static HTML. Input values are dropped; mark anything sensitive with data-doop-mask.',
+    'Visible page content uploads to K17 as static HTML. Input values are dropped; mark anything sensitive with data-doop-mask.',
 
   /* import: GitHub */
   githubTitle: 'Connect a GitHub repo',
   githubForbidden: 'Repo connections are for canvas members — ask the owner for durable access.',
   githubLede:
-    'Doop reads the repo’s routing conventions and lists its screens for review. Nothing lands until you pick.',
+    'K17 reads the repo’s routing conventions and lists its screens for review. Nothing lands until you pick.',
   connectedRepos: 'Connected repos',
   pickScreens: 'Pick screens to import',
   analyzing: 'Analyzing…',

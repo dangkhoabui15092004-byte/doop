@@ -1,17 +1,17 @@
-/** The agent team card (Settings → Doop Agent, Workspace → Agents). */
+/** The agent team card (Settings → K17 Agent, Workspace → Agents). */
 export const agents = {
   title: 'Agent team',
-  descriptionWorkspace: 'The Doop Agent team on every canvas in this workspace.',
-  descriptionPersonal: 'The Doop Agent team on the canvases in your personal space.',
+  descriptionWorkspace: 'The K17 Agent team on every canvas in this workspace.',
+  descriptionPersonal: 'The K17 Agent team on the canvases in your personal space.',
   descriptionRest:
     'Switch off the built-in agents you do not need, change how they work, or add your own. People reach an agent by @mentioning it in a comment or in the prompt box, and automations can hand it a step.',
   builtIn: 'Built in',
   builtInNote:
-    'An agent that is off leaves the mention list and the automation steps; work waiting on it goes to Doop.',
+    'An agent that is off leaves the mention list and the automation steps; work waiting on it goes to K17.',
   off: 'Off',
   edited: 'Edited',
   toggle: 'Use {name}',
-  defaultStaysOn: 'Doop stays on: work addressed to no one goes to it.',
+  defaultStaysOn: 'K17 stays on: work addressed to no one goes to it.',
   builtInLede:
     'Change how this built-in agent works for this team. Your instructions replace the ones it ships with; Reset brings those back.',
   reset: 'Reset to default',
@@ -33,10 +33,10 @@ export const agents = {
   saveFailed: 'The agent could not be saved. Try again.',
   removeTitle: 'Remove {name}?',
   removeDescription:
-    'It stops answering @mentions and leaves the automation step picker. Work still waiting on it goes to Doop, and what it already did stays.',
+    'It stops answering @mentions and leaves the automation step picker. Work still waiting on it goes to K17, and what it already did stays.',
   addTitle: 'Add a custom agent',
   editTitle: 'Edit {name}',
-  formLede: 'A specialist on the Doop Agent team. Its instructions are added to the agent’s prompt whenever it runs.',
+  formLede: 'A specialist on the K17 Agent team. Its instructions are added to the agent’s prompt whenever it runs.',
   name: 'Name',
   namePlaceholder: 'SEO Reviewer',
   fixedHint: 'The name and handle stay as they are: open comments and cards point at them.',

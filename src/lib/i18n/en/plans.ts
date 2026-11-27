@@ -50,7 +50,7 @@ export const plans = {
   rowFonts: 'Custom fonts',
   rowMcp: 'Unlimited MCP calls',
   rowByoAgent: 'Bring your own agent (Claude Code, Codex, Cursor, …)',
-  rowDoopAgent: 'Doop Agent on your own model account',
+  rowDoopAgent: 'K17 Agent on your own model account',
   rowAutomations: 'Automations',
   rowApiKeys: 'Team API keys for CLI and CI pipelines',
   rowImportWeb: 'Import from GitHub, websites, PDF and SVG',

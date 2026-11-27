@@ -1,8 +1,8 @@
 /** The signed-out screens: sign-in, sign-up, password reset, OAuth consent,
  *  the desktop app's browser hand-offs, and the "view as" banner. */
 export const auth = {
-  networkError: 'Could not reach doop — check your connection and try again.',
-  unreachable: 'doop could not be reached — it may be restarting. Try again in a moment.',
+  networkError: 'Could not reach K17 — check your connection and try again.',
+  unreachable: 'K17 could not be reached — it may be restarting. Try again in a moment.',
   somethingWentWrong: 'Something went wrong',
   somethingWentWrongTitle: 'Something went wrong.',
 
@@ -44,9 +44,9 @@ export const auth = {
   resendVerification: 'Resend verification email',
 
   ssoAccountNotLinked:
-    'That email already has a doop account that could not be linked automatically — sign in with email/password instead.',
+    'That email already has a K17 account that could not be linked automatically — sign in with email/password instead.',
   ssoEmailMismatch: "The signed-in email doesn't match the account you started from — try again.",
-  ssoEmailMissing: "Your identity provider didn't share an email address — doop needs one to sign you in.",
+  ssoEmailMissing: "Your identity provider didn't share an email address — K17 needs one to sign you in.",
   ssoDesktopHandoff:
     'That sign-in link has expired — start again and finish in your browser within a couple of minutes.',
   ssoFailed: 'Sign-in failed — try again or use email/password.',
@@ -54,7 +54,7 @@ export const auth = {
   redirectingTo: 'Taking you to {provider}…',
   signInAnotherWay: 'Sign in another way',
   signupDisabled: 'Sign-up with email and password is off on this instance.',
-  browserSignInNotice: 'Finish signing in in your browser — doop signs you in here the moment you come back.',
+  browserSignInNotice: 'Finish signing in in your browser — K17 signs you in here the moment you come back.',
   verificationSent: 'Verification email sent — check your inbox.',
   resetLinkSent: 'If an account exists for that email, a reset link is on its way.',
   resetLinkInvalid: 'This reset link is invalid or expired — request a new one.',
@@ -76,24 +76,24 @@ export const auth = {
   connecting: 'Connecting…',
   connect: 'Connect',
 
-  desktopLinkIncomplete: 'This sign-in link is incomplete — go back to the doop app and try again.',
-  desktopStartFailed: 'Could not start sign-in — go back to the doop app and try again.',
+  desktopLinkIncomplete: 'This sign-in link is incomplete — go back to the K17 app and try again.',
+  desktopStartFailed: 'Could not start sign-in — go back to the K17 app and try again.',
   desktopSigningIn: 'Signing you in…',
-  desktopToProvider: 'Taking you to your identity provider for the doop app.',
+  desktopToProvider: 'Taking you to your identity provider for the K17 app.',
   desktopSignedIn: "You're signed in.",
-  desktopHandoffFailed: 'Could not hand the sign-in over to the doop app. Go back to the app and try again.',
-  desktopSendingBack: 'Sending you back to the doop app… You can close this tab afterwards.',
-  openDoop: 'Open doop',
-  desktopConnectTitle: 'Back to the doop app.',
+  desktopHandoffFailed: 'Could not hand the sign-in over to the K17 app. Go back to the app and try again.',
+  desktopSendingBack: 'Sending you back to the K17 app… You can close this tab afterwards.',
+  openDoop: 'Open K17',
+  desktopConnectTitle: 'Back to the K17 app.',
   desktopConnectBody:
-    'Doop finishes connecting in the app, for the account signed in there. You can close this tab afterwards.',
-  desktopConnectFailed: 'Could not hand the connection over to the doop app. Go back to the app and try again.',
+    'K17 finishes connecting in the app, for the account signed in there. You can close this tab afterwards.',
+  desktopConnectFailed: 'Could not hand the connection over to the K17 app. Go back to the app and try again.',
 
   /* the desktop app's server settings, behind the sign-in screen's cog */
   serverSettings: 'Server settings',
-  serverTitle: 'Doop server',
-  serverLede: 'This app is connected to {host}. Enter another address to use a self-hosted Doop server.',
-  serverLedeLoading: 'Enter the address of the Doop server this app should use.',
+  serverTitle: 'K17 server',
+  serverLede: 'This app is connected to {host}. Enter another address to use a self-hosted K17 server.',
+  serverLedeLoading: 'Enter the address of the K17 server this app should use.',
   serverAddress: 'Server address',
   serverHint: 'The app checks the server, asks you to confirm, then restarts.',
   serverConnect: 'Connect',
@@ -108,13 +108,13 @@ export const auth = {
   leaving: 'Leaving…',
 
   /* connecting a code editor (src/pages/EditorConnect.tsx) */
-  editorConnectTitle: 'Connect {editor} to Doop',
+  editorConnectTitle: 'Connect {editor} to K17',
   editorConnectBody:
-    'The Doop extension in {editor} will open your canvases and let the agents there design on them, as {email}. You can disconnect it any time in Settings → Connect AI.',
+    'The K17 extension in {editor} will open your canvases and let the agents there design on them, as {email}. You can disconnect it any time in Settings → Connect AI.',
   editorConnectAllow: 'Connect {editor}',
   editorConnectSentTitle: 'Back to your editor.',
   editorConnectSentBody: '{editor} finishes signing in. You can close this tab afterwards.',
   editorConnectOpen: 'Open {editor}',
   editorConnectFailed: 'Could not connect the editor. Go back to it and try again.',
-  editorConnectBadLink: 'This link is incomplete or not from a Doop editor extension. Start again from your editor.',
+  editorConnectBadLink: 'This link is incomplete or not from a K17 editor extension. Start again from your editor.',
 } as const
