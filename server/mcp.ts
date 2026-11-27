@@ -140,9 +140,9 @@ import { usageByComponent } from './componentUsage.ts'
    characters (older versions at 2,048) and ChatGPT reads the first 512 most, so this is the
    rules that break the work when skipped, in order of how much; everything else is in
    get_guide (tests/mcpInstructions.test.ts holds the budget). */
-export const INSTRUCTIONS = `Doop is a shared multiplayer design canvas: humans and AI agents design together in real time. Canvases hold frames, artboards that render complete HTML documents live for everyone viewing.
+export const INSTRUCTIONS = `K17 is a shared multiplayer design canvas: humans and AI agents design together in real time. Canvases hold frames, artboards that render complete HTML documents live for everyone viewing.
 
-You MUST call get_guide({ topic: "doop-instructions" }) before using other Doop tools, and again if a long conversation may have dropped it. It lists further topics (images, components, prototypes, redesigns…) to load when a task needs one.
+You MUST call get_guide({ topic: "doop-instructions" }) before using other K17 tools, and again if a long conversation may have dropped it. It lists further topics (images, components, prototypes, redesigns…) to load when a task needs one.
 
 - Call get_canvas before adding or editing frames. Pick one agent_name and pass it on every call; set_status says what you are working on.
 - HUMAN FEEDBACK blocks in tool results are requests from people on the canvas: handle them before your own plan.
@@ -155,7 +155,7 @@ You MUST call get_guide({ topic: "doop-instructions" }) before using other Doop 
 - A request naming a site or URL: call import_webpage FIRST and design from what is there; view_website is only for read-only inspection.
 - Images come from search_images, search_icons, search_logos, upload_asset or generate_image. Never a base64 data: URI, a placeholder logo or an invented brand.
 - Only ready_for_dev is human sign-off; never approve a frame unasked.
-- When Doop gets in your way, call report_issue, then carry on.`
+- When K17 gets in your way, call report_issue, then carry on.`
 
 /** What this server's integrations add to the main guide. */
 
@@ -494,7 +494,7 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
   const arrive = (canvasId: string, agent_name?: string) => {
     if (agent_name) actions.heartbeatAgent(canvasId, actorFrom(agent_name))
   }
-  const server = new McpServer({ name: 'doop-canvas', version: packageJson.version }, { instructions: INSTRUCTIONS })
+  const server = new McpServer({ name: 'k17-canvas', version: packageJson.version }, { instructions: INSTRUCTIONS })
   loadToolTargets(server)
   registerFramePreview(server)
   /* only for a client that shows the card inside the conversation (embedsPreview) */
@@ -507,8 +507,8 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
   server.registerTool(
     'get_guide',
     {
-      title: 'Read the Doop agent guide',
-      description: `Read the Doop agent guide. Call with topic "doop-instructions" ONCE before using other Doop tools (the main guide: review checkpoints, the brief, streaming, frames, tokens, components, design quality, etiquette), and again if a long conversation may have compressed it. Other topics, to load when a task needs one: ${GUIDE_TOPICS.filter(
+      title: 'Read the K17 agent guide',
+      description: `Read the K17 agent guide. Call with topic "doop-instructions" ONCE before using other K17 tools (the main guide: review checkpoints, the brief, streaming, frames, tokens, components, design quality, etiquette), and again if a long conversation may have compressed it. Other topics, to load when a task needs one: ${GUIDE_TOPICS.filter(
         (topic) => topic !== 'doop-instructions',
       )
         .map((topic) => `"${topic}" (${GUIDE_TOPIC_SUMMARIES[topic]})`)
@@ -602,14 +602,14 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
     {
       title: 'Get the connected account',
       description:
-        'Return the Doop account this connection is signed in as (stable id and display name). Read-only; use it to confirm whose canvases you are working on.',
+        'Return the K17 account this connection is signed in as (stable id and display name). Read-only; use it to confirm whose canvases you are working on.',
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       _meta: { 'openai/profile': true },
       inputSchema: {},
       outputSchema: { id: z.string(), name: z.string() },
     },
     async () => {
-      if (!ownerId) return err('this connection is not signed in to a Doop account')
+      if (!ownerId) return err('this connection is not signed in to a K17 account')
       const profile = { id: ownerId, name: owner ?? '' }
       return { content: [{ type: 'text' as const, text: JSON.stringify(profile) }], structuredContent: profile }
     },
@@ -1490,10 +1490,10 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
       userId: ownerId,
     })
     if (!saved.ok) return err(saved.error)
-    return text({ ok: true, id: saved.id, note: 'Thanks — the Doop team reads these. Carry on with your task.' })
+    return text({ ok: true, id: saved.id, note: 'Thanks — the K17 team reads these. Carry on with your task.' })
   }
   const teamMessageFields = {
-    tool: z.string().max(80).optional().describe('The Doop tool involved, if any (e.g. "edit_frame_html").'),
+    tool: z.string().max(80).optional().describe('The K17 tool involved, if any (e.g. "edit_frame_html").'),
     canvas_id: z.string().optional().describe('The canvas you were working on, if any.'),
     agent_name: agentName.optional(),
   }
@@ -1501,15 +1501,15 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
   server.registerTool(
     'report_issue',
     {
-      title: 'Report a problem with Doop',
+      title: 'Report a problem with K17',
       description:
-        "Tell the Doop team where Doop itself got in your way, so it can be fixed: a tool that errored or did something other than its description says, a guide or tool description that left you guessing, a capability you needed and did not have, or a workaround you had to invent. Call it whenever you struggle with Doop — after a retry fails, when you fall back to a workaround, or when you give up on part of a task — then carry on with the task. Ideas and suggestions that did not block you go to share_feedback instead. It does not reach the humans on the canvas and does not change any canvas; for the human's design feedback use save_decision. Be specific: what you tried (tool and arguments in brief), what happened, what you expected. Never include secrets.",
+        "Tell the K17 team where K17 itself got in your way, so it can be fixed: a tool that errored or did something other than its description says, a guide or tool description that left you guessing, a capability you needed and did not have, or a workaround you had to invent. Call it whenever you struggle with K17 — after a retry fails, when you fall back to a workaround, or when you give up on part of a task — then carry on with the task. Ideas and suggestions that did not block you go to share_feedback instead. It does not reach the humans on the canvas and does not change any canvas; for the human's design feedback use save_decision. Be specific: what you tried (tool and arguments in brief), what happened, what you expected. Never include secrets.",
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
       inputSchema: {
         category: z
           .enum(AGENT_ISSUE_CATEGORIES)
           .describe(
-            'bug: a tool misbehaved · tool_error: a tool returned an error you could not get past · confusing: the guide or a description was unclear · missing_capability: you needed something Doop cannot do · other',
+            'bug: a tool misbehaved · tool_error: a tool returned an error you could not get past · confusing: the guide or a description was unclear · missing_capability: you needed something K17 cannot do · other',
           ),
         message: z
           .string()
@@ -1525,15 +1525,15 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
   server.registerTool(
     'share_feedback',
     {
-      title: 'Share an idea or feedback about Doop',
+      title: 'Share an idea or feedback about K17',
       description:
-        "Tell the Doop team how Doop could work better for agents like you: a tool you wish existed, a parameter or result field that would have saved you calls, a workflow that felt clumsy, or something that worked especially well and should stay. Use it when you notice something worth saying, then carry on with the task. Something that broke or blocked you goes to report_issue instead. It does not reach the humans on the canvas and does not change any canvas; for the human's design feedback use save_decision. Be concrete: what you were doing and what would have helped. Never include secrets.",
+        "Tell the K17 team how K17 could work better for agents like you: a tool you wish existed, a parameter or result field that would have saved you calls, a workflow that felt clumsy, or something that worked especially well and should stay. Use it when you notice something worth saying, then carry on with the task. Something that broke or blocked you goes to report_issue instead. It does not reach the humans on the canvas and does not change any canvas; for the human's design feedback use save_decision. Be concrete: what you were doing and what would have helped. Never include secrets.",
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
       inputSchema: {
         category: z
           .enum(AGENT_IDEA_CATEGORIES)
           .describe(
-            'idea: something new Doop could offer · improvement: a change to something that exists · praise: something that worked well · other',
+            'idea: something new K17 could offer · improvement: a change to something that exists · praise: something that worked well · other',
           ),
         message: z
           .string()
@@ -2038,7 +2038,7 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
           'provide exactly one of: source_url (a public font file), local_file=true (a file on your machine — returns a curl command), or data (small base64)',
         )
       if (!canvasFor(canvas_id, 'edit')) return noCanvas(canvas_id)
-      if (!ownerId) return err('fonts are added by a signed-in account; connect with your Doop account')
+      if (!ownerId) return err('fonts are added by a signed-in account; connect with your K17 account')
       const limited = takeUploadSlot(ownerId)
       if (limited) return err(limited)
       if (local_file) {
@@ -2816,7 +2816,7 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
       },
     },
     async ({ frame_id, status, agent_name }) => {
-      if (!ownerId || !owner) return err('this connection is not signed in to a Doop account')
+      if (!ownerId || !owner) return err('this connection is not signed in to a K17 account')
       const found = frameFor(frame_id, 'edit')
       if (!found) return noFrame(frame_id)
       const actor = actorFrom(agent_name)
@@ -3021,7 +3021,7 @@ export async function handleMcpRequest(req: Request, res: Response) {
        rather than retry. Both the header and `_meta` carry the challenge —
        ChatGPT offers Connect only when it finds it in both. */
     const challenge = [
-      'Bearer realm="doop"',
+      'Bearer realm="k17"',
       `resource_metadata="${origin}/.well-known/oauth-protected-resource/mcp"`,
       `scope="${MCP_SCOPES.join(' ')}"`,
       ...(bearer ? ['error="invalid_token"', 'error_description="The access token is expired or not valid"'] : []),
