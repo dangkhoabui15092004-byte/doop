@@ -1,29 +1,29 @@
 import { startLocalAgent } from './lib/localAgent'
 import { navigate } from './lib/navigate'
-import { useEffect, useRef, useState } from 'react'
-import { Home } from './pages/Home'
-import { Community } from './pages/Community'
-import { Settings } from './pages/Settings'
-import { CanvasPage } from './pages/CanvasPage'
-import { PrototypePage } from './pages/PrototypePage'
-import { AuthPage } from './pages/AuthPage'
-import { DesktopHandoff } from './pages/DesktopHandoff'
-import { EditorConnect } from './pages/EditorConnect'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { EDITOR_CONNECT_PATH } from '../shared/editorConnect'
-import { DesktopSignIn } from './pages/DesktopSignIn'
-import { DesktopConnect } from './pages/DesktopConnect'
 import { DESKTOP_CONNECT_PATH } from '../shared/desktopConnect'
-import { DesktopCodexSetup } from './pages/DesktopCodexSetup'
 import { CODEX_SETUP_PATH } from './lib/codexConnection'
-import { OAuthConsent } from './pages/OAuthConsent'
 import { DESKTOP_HANDOFF_PATH, DESKTOP_SIGNIN_PATH } from './lib/desktopAuth'
-import { Admin } from './pages/Admin'
-import { Automations } from './pages/Automations'
-import { AutomationEditor } from './pages/AutomationEditor'
-import { Integrations } from './pages/Integrations'
-import { Workspace } from './pages/Workspace'
-import { UpgradeHost } from './components/UpgradeHost'
 import { FeedbackHost } from './components/FeedbackModal'
+
+const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })))
+const Community = lazy(() => import('./pages/Community').then((m) => ({ default: m.Community })))
+const Settings = lazy(() => import('./pages/Settings').then((m) => ({ default: m.Settings })))
+const CanvasPage = lazy(() => import('./pages/CanvasPage').then((m) => ({ default: m.CanvasPage })))
+const PrototypePage = lazy(() => import('./pages/PrototypePage').then((m) => ({ default: m.PrototypePage })))
+const AuthPage = lazy(() => import('./pages/AuthPage').then((m) => ({ default: m.AuthPage })))
+const DesktopHandoff = lazy(() => import('./pages/DesktopHandoff').then((m) => ({ default: m.DesktopHandoff })))
+const EditorConnect = lazy(() => import('./pages/EditorConnect').then((m) => ({ default: m.EditorConnect })))
+const DesktopSignIn = lazy(() => import('./pages/DesktopSignIn').then((m) => ({ default: m.DesktopSignIn })))
+const DesktopConnect = lazy(() => import('./pages/DesktopConnect').then((m) => ({ default: m.DesktopConnect })))
+const DesktopCodexSetup = lazy(() => import('./pages/DesktopCodexSetup').then((m) => ({ default: m.DesktopCodexSetup })))
+const OAuthConsent = lazy(() => import('./pages/OAuthConsent').then((m) => ({ default: m.OAuthConsent })))
+const Admin = lazy(() => import('./pages/Admin').then((m) => ({ default: m.Admin })))
+const Automations = lazy(() => import('./pages/Automations').then((m) => ({ default: m.Automations })))
+const AutomationEditor = lazy(() => import('./pages/AutomationEditor').then((m) => ({ default: m.AutomationEditor })))
+const Integrations = lazy(() => import('./pages/Integrations').then((m) => ({ default: m.Integrations })))
+const Workspace = lazy(() => import('./pages/Workspace').then((m) => ({ default: m.Workspace })))
 import { authClient } from './lib/auth'
 import { useStore } from './lib/store'
 import { setName } from './lib/identity'
@@ -57,6 +57,14 @@ function reportProviderSignup() {
 }
 
 export function App() {
+  return (
+    <Suspense fallback={<div className="fixed inset-0 bg-code" />}>
+      <AppInner />
+    </Suspense>
+  )
+}
+
+function AppInner() {
   const [route, setRoute] = useState(location.pathname + location.search)
   const path = route.split('?')[0]!
   const { data: session, isPending } = authClient.useSession()
