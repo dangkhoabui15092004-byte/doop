@@ -54,8 +54,18 @@ for (const [network, prefix] of [
   blockedIpv6.addSubnet(network, prefix, 'ipv6')
 }
 
+function isLocalhostAllowed(): boolean {
+  return process.env.ALLOW_LOCALHOST_IMPORT === 'true'
+}
+
+function isLoopbackHost(raw: string): boolean {
+  const h = raw.toLowerCase().replace(/^\[|\]$/g, '').replace(/\.$/, '')
+  return h === 'localhost' || h === '127.0.0.1' || h === '::1' || h.endsWith('.localhost')
+}
+
 function isPrivateIp(rawIp: string): boolean {
   const ip = rawIp.replace(/^\[|\]$/g, '')
+  if (isLocalhostAllowed() && (ip === '127.0.0.1' || ip === '::1')) return false
   const family = net.isIP(ip)
   if (family === 0) return true
   return family === 4 ? blockedIpv4.check(ip, 'ipv4') : blockedIpv6.check(ip, 'ipv6')
@@ -74,6 +84,7 @@ export function parsePublicHttpUrl(raw: string): URL {
   const host = url.hostname.toLowerCase().replace(/\.$/, '')
   const ipHost = host.replace(/^\[|\]$/g, '')
   const isIp = net.isIP(ipHost) !== 0
+  if (isLocalhostAllowed() && isLoopbackHost(host)) return url
   if (
     host === 'localhost' ||
     host.endsWith('.localhost') ||
