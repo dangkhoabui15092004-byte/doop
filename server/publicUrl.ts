@@ -176,6 +176,13 @@ export async function fetchPinnedPublicUrl(
   raw: string | URL,
   init: Omit<UndiciRequestInit, 'dispatcher'> = {},
 ): Promise<Response> {
+  const parsed = parsePublicHttpUrl(String(raw))
+  if (isLocalhostAllowed() && isLoopbackHost(parsed.hostname)) {
+    return (await fetch(parsed, {
+      ...(init as RequestInit),
+      redirect: (init.redirect as RequestRedirect) ?? 'manual',
+    })) as unknown as Response
+  }
   return fetchResolvedPublicUrl(await resolvePublicNetworkUrl(raw), { ...init, redirect: init.redirect ?? 'manual' })
 }
 
