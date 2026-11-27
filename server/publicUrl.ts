@@ -281,6 +281,10 @@ export async function guardPublicPageRequests(
           await request.continue()
           return
         }
+        if (isLocalhostAllowed() && isLoopbackHost(requested.hostname)) {
+          await request.continue()
+          return
+        }
         parsePublicHttpUrl(raw)
         if (offNetwork) {
           await request.continue()
