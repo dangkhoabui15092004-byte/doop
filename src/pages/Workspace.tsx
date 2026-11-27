@@ -224,7 +224,7 @@ export function Workspace({ workspaceId }: { workspaceId: string }) {
         </DashHeader>
 
         <DashContent>
-          <div className="flex items-start gap-4 md:items-end">
+          <div className="flex items-start justify-between gap-4 md:items-end">
             <div className="min-w-0">
               <DashTitle className="truncate">{ws?.name ?? '…'}</DashTitle>
               <DashSubtitle>
@@ -235,6 +235,26 @@ export function Workspace({ workspaceId }: { workspaceId: string }) {
                   : '…'}
               </DashSubtitle>
             </div>
+            {ws && admin && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="shrink-0"
+                onClick={async () => {
+                  try {
+                    const res = await fetch(`/api/workspaces/${ws.id}/invite-link`, { credentials: 'include' })
+                    if (!res.ok) throw new Error('Could not create invite link')
+                    const data = (await res.json()) as { url: string }
+                    await navigator.clipboard.writeText(data.url)
+                    setToast('Đã copy link chia sẻ workspace!')
+                  } catch (err) {
+                    handleError(err, 'Không thể copy link chia sẻ')
+                  }
+                }}
+              >
+                Chia sẻ Workspace
+              </Button>
+            )}
           </div>
 
           <Tabs value={pane} onValueChange={(next) => setPane(next as Pane)} className="mt-4 flex md:hidden">

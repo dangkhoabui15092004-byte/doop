@@ -1543,6 +1543,18 @@ app.use('/api/community', communityRouter)
 app.use('/api/automations', automationsRouter)
 app.use('/api/integrations', integrationsRouter)
 app.use('/api/workspaces', workspaces.workspacesRouter)
+
+app.get('/w/:id/join/:token', async (req, res) => {
+  const { id, token } = req.params
+  const session = await auth.api.getSession({ headers: fromNodeHeaders(req.headers) }).catch(() => null)
+  if (!session?.user?.id) {
+    const next = encodeURIComponent(`/w/${id}/join/${token}`)
+    return res.redirect(`/sign-in?redirect_to=${next}`)
+  }
+  const result = workspaces.joinWorkspaceByToken(id, token, session.user.id)
+  if (!result.ok) return res.status(400).send(result.error || 'Invalid invite link')
+  return res.redirect(`/w/${id}`)
+})
 app.use('/api/live-activities', liveActivitiesRouter)
 // startLiveActivityDelivery() — disabled for self-hosted web-only deployment
 app.use('/api/billing', billing.billingRouter)

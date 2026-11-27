@@ -1,4 +1,5 @@
 import { env } from './env.ts'
+import { createHmac, timingSafeEqual } from 'node:crypto'
 import express from 'express'
 import { and, eq, inArray } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
@@ -731,6 +732,36 @@ workspacesRouter.delete('/:id', async (req, res) => {
     console.error('[workspaces] delete failed', err)
     res.status(500).json({ error: 'could not delete the workspace — try again' })
   }
+})
+
+/* ---- invite link ---- */
+
+export function workspaceInviteToken(workspaceId: string): string {
+  return createHmac('sha256', env.BETTER_AUTH_SECRET || 'k17-ws-invite')
+    .update(`ws-join:${workspaceId}`)
+    .digest('base64url')
+    .slice(0, 24)
+}
+
+export function joinWorkspaceByToken(
+  workspaceId: string,
+  token: string,
+  userId: string,
+): { ok: boolean; error?: string } {
+  const ws = records.get(workspaceId)
+  if (!ws) return { ok: false, error: 'workspace not found' }
+  const expected = workspaceInviteToken(workspaceId)
+  const a = Buffer.from(token)
+  const b = Buffer.from(expected)
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return { ok: false, error: 'invalid invite link' }
+  addMember(ws.id, userId, 'member', ws.ownerId)
+  return { ok: true }
+}
+
+workspacesRouter.get('/:id/invite-link', (req, res) => {
+  const ws = requireWorkspace(req, res, req.params.id, 'admin')
+  if (!ws) return
+  res.json({ url: `${ORIGIN}/w/${ws.id}/join/${workspaceInviteToken(ws.id)}` })
 })
 
 /* ---- members ---- */
