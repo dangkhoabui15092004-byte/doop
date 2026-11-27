@@ -553,7 +553,7 @@ export function AuthPage({
               variant="well"
               type="password"
               required
-              minLength={8}
+              minLength={4}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={mode === 'signin' ? '••••••••' : t('auth.passwordPlaceholder')}
