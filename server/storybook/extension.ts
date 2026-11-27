@@ -9,6 +9,6 @@ export const storybookExtension: ServerExtension = {
   canvasRouter: storybookCanvasRouter,
   registerMcpTools: registerStorybookMcpTools,
   mcpGuideLines: [
-    '- Storybook: when the human points at their Storybook (or asks to design with "our components"), call list_storybook_components with its URL, then import_storybook with the titles that matter, so their real components land as Doop components with variants, tokens and fonts. Compose screens from those with <doop-use>; sync_storybook brings them up to date later.',
+    '- Storybook: when the human points at their Storybook (or asks to design with "our components"), call list_storybook_components with its URL, then import_storybook with the titles that matter, so their real components land as K17 components with variants, tokens and fonts. Compose screens from those with <doop-use>; sync_storybook brings them up to date later.',
   ],
 }
