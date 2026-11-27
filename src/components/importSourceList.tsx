@@ -16,7 +16,7 @@ export function importSources(t: Translate = translate): ImportSource[] {
     {
       id: 'figma',
       title: 'Figma',
-      blurb: 'Kết nối bằng Client ID & Secret để kéo trực tiếp frame từ Figma',
+      blurb: 'Nhập trực tiếp frame từ Figma vào canvas',
       icon: <AppIcon brand="figma" />,
     },
     ...clientIntegrations

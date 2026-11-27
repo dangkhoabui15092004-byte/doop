@@ -97,7 +97,7 @@ export function FigmaImportSection({
       <ImportStepHeader
         icon={<AppIcon brand="figma" size={40} />}
         title="Import từ Figma"
-        lede="Kết nối Figma bằng Client ID & Client Secret để kéo trực tiếp frame về canvas K17."
+        lede="Kết nối tài khoản Figma để nhập trực tiếp frame vào canvas."
       />
 
       {!status ? (
