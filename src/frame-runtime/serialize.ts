@@ -15,8 +15,8 @@ function cleanClone(root: HTMLElement): HTMLElement {
     const replayIndex = Array.prototype.indexOf.call(document.documentElement.childNodes, replayScript)
     ;(root.childNodes[replayIndex] as ChildNode).remove()
   }
-  const boot = root.querySelector('script[data-v-boot]')
-  if (boot && boot.parentNode) boot.parentNode.removeChild(boot)
+  /* Strip scripts on visual save so the edited DOM is persisted cleanly without scripts overwriting edits on reload */
+  for (const sc of root.querySelectorAll('script')) sc.remove()
   const es = root.querySelector('style[data-v-edit]')
   if (es && es.parentNode) es.parentNode.removeChild(es)
   for (const ran of root.querySelectorAll('[data-v-ran]')) ran.removeAttribute('data-v-ran')

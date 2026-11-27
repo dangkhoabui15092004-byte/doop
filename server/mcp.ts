@@ -152,6 +152,7 @@ You MUST call get_guide({ topic: "k17-instructions" }) before using other K17 to
 - Create with create_frame, then stream append_frame_html one section per call. Small changes: edit_frame_html. Rename, move, resize: update_frame.
 - After every create or significant edit, call get_frame_screenshot and fix what looks wrong.
 - Keep every data-doop-* attribute when you rewrite markup: comments, links and prototype wiring hang on them.
+- Pure static HTML/CSS only: NEVER include <script> tags in frames (use data-doop-action for clickable prototypes) so every text and element stays directly editable on the canvas.
 - A request naming a site or URL: call import_webpage FIRST and design from what is there; view_website is only for read-only inspection.
 - Images come from search_images, search_icons, search_logos, upload_asset or generate_image. Never a base64 data: URI, a placeholder logo or an invented brand.
 - Only ready_for_dev is human sign-off; never approve a frame unasked.
