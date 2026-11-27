@@ -27,8 +27,18 @@ const MIGRATIONS = path.join(path.dirname(fileURLToPath(import.meta.url)), 'migr
 export async function initDb(): Promise<void> {
   const url = env.DATABASE_URL
   if (url) {
+    const pg = await import('pg')
     const { drizzle } = await import('drizzle-orm/node-postgres')
-    db = drizzle(url, { schema })
+    const needsSsl = /[?&]sslmode=(require|verify-ca|verify-full)/i.test(url)
+    /* Strip sslmode from connectionString when supplying explicit ssl options so
+       managed hosts with custom CAs (e.g. Aiven) connect cleanly without cert errors. */
+    const cleanUrl = needsSsl ? url.replace(/([?&])sslmode=[^&]*&?/i, '$1').replace(/[?&]$/, '') : url
+    const pool = new pg.Pool({
+      connectionString: cleanUrl,
+      max: 10,
+      ...(needsSsl ? { ssl: { rejectUnauthorized: false } } : {}),
+    })
+    db = drizzle(pool, { schema })
     const { migrate } = await import('drizzle-orm/node-postgres/migrator')
     await migrate(db, { migrationsFolder: MIGRATIONS })
   } else {
