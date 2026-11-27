@@ -94,7 +94,7 @@ export function createFigmaRouter(deps: {
     const params = new URLSearchParams({
       client_id: finalId,
       redirect_uri: redirectUri(),
-      scope: 'files:read',
+      scope: 'file_content:read',
       state,
       response_type: 'code',
     })
