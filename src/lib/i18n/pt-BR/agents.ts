@@ -2,17 +2,17 @@ import type { Catalog } from '..'
 
 export const agents: Catalog['agents'] = {
   title: 'Equipe de agentes',
-  descriptionWorkspace: 'A equipe do Doop Agent em todos os canvases deste workspace.',
-  descriptionPersonal: 'A equipe do Doop Agent nos canvases do seu espaço pessoal.',
+  descriptionWorkspace: 'A equipe do K17 Agent em todos os canvases deste workspace.',
+  descriptionPersonal: 'A equipe do K17 Agent nos canvases do seu espaço pessoal.',
   descriptionRest:
     'Desligue os agentes padrão de que você não precisa, mude como eles trabalham ou adicione os seus. As pessoas chamam um agente com @menção em um comentário ou na caixa de prompt, e automações podem entregar uma etapa a ele.',
   builtIn: 'Padrão',
   builtInNote:
-    'Um agente desligado sai da lista de menções e das etapas de automação; o trabalho que esperava por ele vai para o Doop.',
+    'Um agente desligado sai da lista de menções e das etapas de automação; o trabalho que esperava por ele vai para o K17.',
   off: 'Desligado',
   edited: 'Editado',
   toggle: 'Usar {name}',
-  defaultStaysOn: 'O Doop fica ligado: o trabalho sem destinatário vai para ele.',
+  defaultStaysOn: 'O K17 fica ligado: o trabalho sem destinatário vai para ele.',
   builtInLede:
     'Mude como este agente padrão trabalha para esta equipe. Suas instruções substituem as originais; Restaurar as traz de volta.',
   reset: 'Restaurar padrão',
@@ -34,11 +34,11 @@ export const agents: Catalog['agents'] = {
   saveFailed: 'Não foi possível salvar o agente. Tente de novo.',
   removeTitle: 'Remover {name}?',
   removeDescription:
-    'Ele deixa de responder a @menções e sai da lista de etapas das automações. O trabalho que ainda esperava por ele vai para o Doop, e o que ele já fez continua.',
+    'Ele deixa de responder a @menções e sai da lista de etapas das automações. O trabalho que ainda esperava por ele vai para o K17, e o que ele já fez continua.',
   addTitle: 'Adicionar um agente personalizado',
   editTitle: 'Editar {name}',
   formLede:
-    'Um especialista na equipe do Doop Agent. As instruções dele entram no prompt do agente sempre que ele roda.',
+    'Um especialista na equipe do K17 Agent. As instruções dele entram no prompt do agente sempre que ele roda.',
   name: 'Nome',
   namePlaceholder: 'Revisor de SEO',
   fixedHint: 'O nome e o identificador não mudam: comentários e cards abertos apontam para eles.',

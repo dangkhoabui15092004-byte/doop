@@ -146,7 +146,7 @@ export const automations = {
   connectProvider: 'Connect {name}',
   slackChannelLabel: 'Slack channel ID',
   slackChannelPlaceholder: 'Channel ID, e.g. C012ABCDEF',
-  slackChannelHint: 'Copy the ID from Slack channel details and invite @Doop to the channel.',
+  slackChannelHint: 'Copy the ID from Slack channel details and invite @K17 to the channel.',
   slackMessageLabel: 'Slack message',
   linearTeamLabel: 'Linear team',
   chooseTeam: 'Choose a team',
@@ -237,10 +237,10 @@ export const automations = {
 
   /* Slack */
   slackWorkspace: 'Slack workspace',
-  slackPitch: 'Mention @Doop with a design brief',
-  slackFootnote: 'Anyone in the workspace can mention @Doop; every run spends your model account or task allowance',
+  slackPitch: 'Mention @K17 with a design brief',
+  slackFootnote: 'Anyone in the workspace can mention @K17; every run spends your model account or task allowance',
   slackNeedsApp: 'Needs a Slack app configured by this server’s administrator',
   installSlack: 'Install K17 in Slack',
   slackDisconnectCopy:
-    'Stop @Doop mentions and pending Slack design work in this workspace. Existing canvases stay. To remove K17 from Slack too, uninstall the app in Slack’s workspace settings.',
+    'Stop @K17 mentions and pending Slack design work in this workspace. Existing canvases stay. To remove K17 from Slack too, uninstall the app in Slack’s workspace settings.',
 } as const

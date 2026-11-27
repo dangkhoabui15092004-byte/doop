@@ -49,7 +49,7 @@ export const connect = {
   claudeWebLede: 'Add K17 to your Claude account, approve the connection, and start designing. No download needed.',
   claudeWebAddTitle: 'Add K17 to Claude',
   claudeWebAddBody:
-    'Open Claude with Doop’s name and server address already filled in. Review the details and add the connector.',
+    'Open Claude with K17’s name and server address already filled in. Review the details and add the connector.',
   addToClaude: 'Add to Claude',
   claudeWebApproveBody: 'Click Connect on the new connector. A browser tab opens so you can approve the connection.',
   claudeWebPointWithPrompt: 'In a new chat enable K17 under the tools menu and send this as your first message.',

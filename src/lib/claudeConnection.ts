@@ -14,7 +14,7 @@ export function claudeConnectorInstallUrl(mcpUrl: string): string | null {
   if (!canUsePublicMcpEndpoint(mcpUrl)) return null
   const install = new URL('https://claude.ai/customize/connectors')
   install.searchParams.set('modal', 'add-custom-connector')
-  install.searchParams.set('connectorName', 'Doop')
+  install.searchParams.set('connectorName', 'K17')
   install.searchParams.set('connectorUrl', new URL(mcpUrl).href)
   return install.href
 }

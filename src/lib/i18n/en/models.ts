@@ -22,7 +22,7 @@ export const models = {
   deepseekKeyShort: 'DeepSeek V4, with your own key',
   kimiKeyShort: 'Kimi K3, with your own key',
   kimiCodeShort: 'Your Kimi membership, through a Kimi Code key',
-  claudeKeyShort: 'Pay per token, runs on Doop’s server',
+  claudeKeyShort: 'Pay per token, runs on K17’s server',
   claudePlanShort: 'Your Claude subscription, on this computer',
   downloadShort: 'Get the app',
   desktopOnly: 'Desktop app only',

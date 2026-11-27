@@ -1,14 +1,14 @@
 {
   "manifest_version": "0.3",
-  "name": "doop",
-  "display_name": "Doop",
+  "name": "k17",
+  "display_name": "K17",
   "version": "0.1.0",
-  "description": "Design with Claude on a shared canvas. Create, edit and review designs together in real time.",
-  "author": { "name": "Doop", "url": "https://doop.design" },
-  "homepage": "https://doop.design",
-  "documentation": "https://github.com/kgoedecke/doop/tree/main/claude-extension",
-  "support": "https://github.com/kgoedecke/doop/issues",
-  "repository": { "type": "git", "url": "https://github.com/kgoedecke/doop" },
+  "description": "Design with Claude on a shared K17 canvas. Create, edit and review designs together in real time.",
+  "author": { "name": "K17", "url": "https://k17.dpdns.org" },
+  "homepage": "https://k17.dpdns.org",
+  "documentation": "https://github.com/dangkhoabui15092004-byte/doop/tree/khoadev-next/plugins/k17",
+  "support": "https://github.com/dangkhoabui15092004-byte/doop/issues",
+  "repository": { "type": "git", "url": "https://github.com/dangkhoabui15092004-byte/doop" },
   "license": "AGPL-3.0-only",
   "icon": "icon.png",
   "server": {
@@ -24,16 +24,16 @@
         "--auth-timeout",
         "300",
         "--static-oauth-client-metadata",
-        "{\"client_name\":\"Doop for Claude Desktop\",\"client_uri\":\"https://doop.design\"}"
+        "{\"client_name\":\"K17 for Claude Desktop\",\"client_uri\":\"https://k17.dpdns.org\"}"
       ]
     }
   },
   "user_config": {
     "server_url": {
       "type": "string",
-      "title": "Doop server URL",
-      "description": "Keep this for Doop Cloud. For self-hosting, use your Doop server's URL followed by /mcp. HTTPS is required except on localhost.",
-      "default": "https://doop.design/mcp",
+      "title": "K17 server URL",
+      "description": "Your K17 server's URL followed by /mcp. HTTPS is required except on localhost.",
+      "default": "https://k17.dpdns.org/mcp",
       "required": true
     }
   },
@@ -42,5 +42,5 @@
     "runtimes": { "node": ">=20.18.1" }
   },
   "tools_generated": true,
-  "keywords": ["design", "canvas", "html", "css", "multiplayer"]
+  "keywords": ["design", "canvas", "html", "css", "multiplayer", "k17"]
 }

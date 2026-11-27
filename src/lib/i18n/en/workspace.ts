@@ -147,7 +147,7 @@ export const workspace = {
 
   /* Codex */
   codexManual: 'Run this in a terminal with Codex CLI installed:',
-  codexAdding: 'Adding Doop…',
+  codexAdding: 'Adding K17…',
   codexAdded: 'Added to Codex',
   codexAdd: 'Add to Codex',
   codexConfigured: 'K17 is configured. Open a new Codex chat, then sign in to K17 when prompted.',

@@ -47,7 +47,7 @@ export const panels: Catalog['panels'] = {
     '— fixe um frame que você adora (Fixar como referência, no inspetor dele). Os agentes copiam as cores, a tipografia e o layout dele quando criam algo novo.',
   memoryIntroRules: '— guias de estilo que os agentes leem antes de criar. Escreva-os ou deixe-os crescer.',
   memoryIntroDecisions:
-    '— o feedback que você dá aos agentes é registrado aqui automaticamente assim que é atendido. Quando uma preferência se repete, o Doop sugere adicioná-la às suas regras.',
+    '— o feedback que você dá aos agentes é registrado aqui automaticamente assim que é atendido. Quando uma preferência se repete, o K17 sugere adicioná-la às suas regras.',
   memorySuggestion: 'Sugestão de memória',
   memoryFromDecisions: { one: 'a partir de {count} decisão', other: 'a partir de {count} decisões' },
   memoryDismiss: 'Dispensar',
@@ -151,7 +151,7 @@ export const panels: Catalog['panels'] = {
   activityClosePanel: 'Fechar painel',
   activityYourAgent: 'Seu agente',
   activityAgentOf: 'Agente de {name}',
-  activityDoopAgent: 'Doop Agent',
+  activityDoopAgent: 'K17 Agent',
   activityWaiting: 'esperando',
   activityRecentTasks: 'Tarefas recentes',
   chatResize: 'Arraste para redimensionar a conversa · clique duas vezes para redefinir',
@@ -160,7 +160,7 @@ export const panels: Catalog['panels'] = {
   chatWorking: 'Trabalhando nisso…',
   chatDone: 'Pronto.',
   activityNoTasks:
-    'Nenhuma tarefa ainda. Peça ao Doop Agent abaixo ou conecte o seu — o que os agentes fazem aparece aqui.',
+    'Nenhuma tarefa ainda. Peça ao K17 Agent abaixo ou conecte o seu — o que os agentes fazem aparece aqui.',
   activityWorkingOn: 'Em andamento',
   activityWorkedOn: 'Concluídas',
   activityShowLess: 'Mostrar menos',
@@ -182,18 +182,18 @@ export const panels: Catalog['panels'] = {
   promptScopedElement: 'Restrito a {name} neste frame',
   promptRemoveFrameScope: 'Remover restrição ao frame',
   promptRemoveElementScope: 'Remover restrição ao elemento',
-  promptAria: 'Pergunte ao Doop Agent',
+  promptAria: 'Pergunte ao K17 Agent',
   promptPlaceholderFrame: 'O que deve mudar neste frame…',
   promptPlaceholderElement: 'O que deve mudar neste elemento…',
-  promptPlaceholder: 'Peça ao Doop para criar algo…',
+  promptPlaceholder: 'Peça ao K17 para criar algo…',
   promptAttach: 'Anexar imagens',
   promptAttachTitle: 'Anexar capturas de tela ou imagens',
   promptSendTooltip: 'Enviar (Enter)',
   promptSend: 'Enviar',
-  promptSent: 'O Doop Agent já está nisso — acompanhe o canvas',
+  promptSent: 'O K17 Agent já está nisso — acompanhe o canvas',
 
   modelAria: 'Modelo: {label}',
-  modelNoAccount: 'Nada conectado ainda — o Doop Agent usa o modelo do servidor quando houver um configurado.',
+  modelNoAccount: 'Nada conectado ainda — o K17 Agent usa o modelo do servidor quando houver um configurado.',
   modelSettings: 'Configurações do modelo…',
   modelConnect: 'Conectar um modelo…',
 
@@ -310,7 +310,7 @@ export const panels: Catalog['panels'] = {
   historyCurrent: 'Atual',
   historyEmpty: 'Nenhuma versão anterior ainda — elas aparecem quando um design é substituído.',
 
-  importTitle: 'Importar para o Doop',
+  importTitle: 'Importar para o K17',
   importLede:
     'Escolha uma origem. Importações que encontram várias páginas ou frames mostram uma revisão antes de qualquer coisa entrar.',
   importSoon: 'Em breve',

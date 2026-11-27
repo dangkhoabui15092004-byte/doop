@@ -70,7 +70,7 @@ export const settings = {
 
   languageTitle: 'Language',
   languageDescription:
-    'The language Doop’s screens are written in, in this browser. Until you pick one, you see the default this server is set to.',
+    'The language K17’s screens are written in, in this browser. Until you pick one, you see the default this server is set to.',
   languageRow: 'Language',
   languageAria: 'Language',
   languagePicked: 'Picked in this browser.',

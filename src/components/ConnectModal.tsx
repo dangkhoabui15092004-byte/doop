@@ -317,7 +317,7 @@ function agentSteps(
             body: (
               <>
                 {t('connect.chatgptAddBefore')}
-                <strong>Doop</strong>
+                <strong>K17</strong>
                 {t('connect.chatgptAddDescribe')}
                 <strong>OAuth</strong>
                 {t('connect.chatgptAddReview')}
@@ -422,7 +422,7 @@ function AgentSteps({
      rest lives behind get_guide. The only thing this prompt knows that they don't is
      which canvas the human is looking at. */
   const prompt = canvasId
-    ? `Work on Doop canvas ${canvasId}. Start with get_guide({ topic: "doop-instructions" }) and follow it.`
+    ? `Work on K17 canvas ${canvasId}. Start with get_guide({ topic: "k17-instructions" }) and follow it.`
     : ''
   const [mcpConnection, setMcpConnection] = useState<McpConnection>('browser')
   /* a browser keeps these steps open beside the new tab; the desktop shell's

@@ -101,7 +101,7 @@ const BRIDGE_SUFFIX = / \(via mcp-remote [^)]*\)$/
 /** Whether the connecting client is told about the card. Only a listed client
  *  is: any other one may support MCP Apps with nowhere to embed a card, as Pi
  *  does, whose adapter opened one browser tab per get_canvas, edit and
- *  screenshot, with "Open in Doop" landing a signed-out browser on the sign-in
+ *  screenshot, with "Open in K17" landing a signed-out browser on the sign-in
  *  page. Everyone else keeps the text results, which are the same either way. */
 export function embedsPreview(clientName: string | undefined): boolean {
   if (!clientName) return false
@@ -109,7 +109,7 @@ export function embedsPreview(clientName: string | undefined): boolean {
 }
 
 const WIDGET_DESCRIPTION =
-  'Shows a rendered preview of the Doop frames this tool touched, with links that open each frame in Doop.'
+  'Shows a rendered preview of the K17 frames this tool touched, with links that open each frame in K17.'
 
 /** Registers the component resource. One per server instance; the host
  *  fetches it once per URI and caches it, so the URI doubles as a version. */
@@ -121,7 +121,7 @@ function registerPreviewResource(server: McpServer, uri: string): void {
   server.registerResource(
     `doop-frame-preview-${uri.replace(/\W+/g, '-')}`,
     uri,
-    { title: 'Doop frame preview', description: WIDGET_DESCRIPTION, mimeType: PREVIEW_MIME },
+    { title: 'K17 frame preview', description: WIDGET_DESCRIPTION, mimeType: PREVIEW_MIME },
     async () => ({
       contents: [
         {
@@ -270,8 +270,8 @@ export function framePreviewHtml(): string {
     var single = frames.length === 1 && frames[0].url ? frames[0] : null;
     var target = single ? single.url : data.canvas.url;
     var html = '<div class="head"><div><div class="title">' + esc(data.canvas.name || 'Canvas') + '</div>' +
-      '<div class="sub">' + (frames.length === 1 ? '1 frame' : frames.length + ' frames') + ' · Doop</div></div>' +
-      '<button class="open" type="button" data-href="' + esc(target) + '" title="' + esc(single ? 'Open ' + single.name + ' in Doop' : 'Open the canvas in Doop') + '">Open in Doop</button></div>';
+      '<div class="sub">' + (frames.length === 1 ? '1 frame' : frames.length + ' frames') + ' · K17</div></div>' +
+      '<button class="open" type="button" data-href="' + esc(target) + '" title="' + esc(single ? 'Open ' + single.name + ' in K17' : 'Open the canvas in K17') + '">Open in K17</button></div>';
     if (!frames.length) html += '<p class="empty">This canvas has no frames yet.</p>';
     else {
       var shown = frames.slice(0, MAX_SHOWN);
@@ -282,13 +282,13 @@ export function framePreviewHtml(): string {
         var shot = f.empty
           ? '<div class="shot missing" style="aspect-ratio:' + esc(ratio) + '; max-height: 240px;"><span>Design in progress</span></div>'
           : '<img class="shot" src="' + esc(f.image_url) + '" alt="' + esc(f.name) + '" loading="lazy" style="aspect-ratio:' + esc(ratio) + '; max-height: 480px;" />';
-        var openLink = single ? '' : '<a class="frame-open" href="' + esc(f.url) + '" data-href="' + esc(f.url) + '" title="Open ' + esc(f.name) + ' in Doop">Open</a>';
-        html += '<div class="card"><a href="' + esc(f.url) + '" data-href="' + esc(f.url) + '" title="Open ' + esc(f.name) + ' in Doop">' + shot + '</a>' +
+        var openLink = single ? '' : '<a class="frame-open" href="' + esc(f.url) + '" data-href="' + esc(f.url) + '" title="Open ' + esc(f.name) + ' in K17">Open</a>';
+        html += '<div class="card"><a href="' + esc(f.url) + '" data-href="' + esc(f.url) + '" title="Open ' + esc(f.name) + ' in K17">' + shot + '</a>' +
           '<div class="meta"><b>' + esc(f.name) + '</b><div class="side"><span>' + esc(f.width) + '×' + esc(f.height) + '</span>' + openLink + '</div></div></div>';
       }
       if (frames.length > shown.length) {
         var rest = frames.length - shown.length;
-        html += '<a class="card more" href="' + esc(data.canvas.url) + '" data-href="' + esc(data.canvas.url) + '">+' + rest + ' more frame' + (rest === 1 ? '' : 's') + '<span>Open in Doop</span></a>';
+        html += '<a class="card more" href="' + esc(data.canvas.url) + '" data-href="' + esc(data.canvas.url) + '">+' + rest + ' more frame' + (rest === 1 ? '' : 's') + '<span>Open in K17</span></a>';
       }
       html += '</div>';
     }
@@ -338,7 +338,7 @@ export function framePreviewHtml(): string {
     if (m.method === 'ui/notifications/tool-result' && m.params && m.params.structuredContent) apply(m.params.structuredContent, 'tool-result');
     if (m.method === 'ui/notifications/host-context-changed' && m.params && m.params.theme) setTheme(m.params.theme);
   });
-  request('ui/initialize', { appInfo: { name: 'Doop frame preview', version: '1' }, appCapabilities: {}, protocolVersion: '2026-01-26' })
+  request('ui/initialize', { appInfo: { name: 'K17 frame preview', version: '1' }, appCapabilities: {}, protocolVersion: '2026-01-26' })
     .then(function (result) {
       bridge.connected = true;
       notify('ui/notifications/initialized');

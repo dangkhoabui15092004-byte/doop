@@ -87,9 +87,9 @@ export const auth: Catalog['auth'] = {
   desktopConnectFailed: 'Não foi possível passar a conexão para o app do doop. Volte ao app e tente de novo.',
 
   serverSettings: 'Configurações do servidor',
-  serverTitle: 'Servidor do Doop',
-  serverLede: 'Este app está conectado a {host}. Informe outro endereço para usar um servidor Doop auto-hospedado.',
-  serverLedeLoading: 'Informe o endereço do servidor Doop que este app deve usar.',
+  serverTitle: 'Servidor do K17',
+  serverLede: 'Este app está conectado a {host}. Informe outro endereço para usar um servidor K17 auto-hospedado.',
+  serverLedeLoading: 'Informe o endereço do servidor K17 que este app deve usar.',
   serverAddress: 'Endereço do servidor',
   serverHint: 'O app verifica o servidor, pede sua confirmação e reinicia.',
   serverConnect: 'Conectar',
@@ -102,14 +102,14 @@ export const auth: Catalog['auth'] = {
   stopViewing: 'Parar de visualizar',
   leaving: 'Saindo…',
 
-  editorConnectTitle: 'Conectar o {editor} ao Doop',
+  editorConnectTitle: 'Conectar o {editor} ao K17',
   editorConnectBody:
-    'A extensão do Doop no {editor} vai abrir seus canvases e deixar os agentes de lá desenharem neles, como {email}. Você pode desconectá-la quando quiser em Configurações → Conectar IA.',
+    'A extensão do K17 no {editor} vai abrir seus canvases e deixar os agentes de lá desenharem neles, como {email}. Você pode desconectá-la quando quiser em Configurações → Conectar IA.',
   editorConnectAllow: 'Conectar o {editor}',
   editorConnectSentTitle: 'De volta ao seu editor.',
   editorConnectSentBody: 'O {editor} conclui o acesso. Você pode fechar esta aba depois.',
   editorConnectOpen: 'Abrir o {editor}',
   editorConnectFailed: 'Não foi possível conectar o editor. Volte a ele e tente de novo.',
   editorConnectBadLink:
-    'Este link está incompleto ou não veio de uma extensão do Doop. Comece de novo pelo seu editor.',
+    'Este link está incompleto ou não veio de uma extensão do K17. Comece de novo pelo seu editor.',
 }

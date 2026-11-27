@@ -48,7 +48,7 @@ export const plans: Catalog['plans'] = {
   rowFonts: 'Fontes personalizadas',
   rowMcp: 'Chamadas MCP ilimitadas',
   rowByoAgent: 'Use seu próprio agente (Claude Code, Codex, Cursor, …)',
-  rowDoopAgent: 'Doop Agent na sua própria conta de modelo',
+  rowDoopAgent: 'K17 Agent na sua própria conta de modelo',
   rowAutomations: 'Automações',
   rowApiKeys: 'Chaves de API da equipe para CLI e pipelines de CI',
   rowImportWeb: 'Importar do GitHub, de sites, PDF e SVG',

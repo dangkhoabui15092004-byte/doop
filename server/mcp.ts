@@ -142,7 +142,7 @@ import { usageByComponent } from './componentUsage.ts'
    get_guide (tests/mcpInstructions.test.ts holds the budget). */
 export const INSTRUCTIONS = `K17 is a shared multiplayer design canvas: humans and AI agents design together in real time. Canvases hold frames, artboards that render complete HTML documents live for everyone viewing.
 
-You MUST call get_guide({ topic: "doop-instructions" }) before using other K17 tools, and again if a long conversation may have dropped it. It lists further topics (images, components, prototypes, redesigns…) to load when a task needs one.
+You MUST call get_guide({ topic: "k17-instructions" }) before using other K17 tools, and again if a long conversation may have dropped it. It lists further topics (images, components, prototypes, redesigns…) to load when a task needs one.
 
 - Call get_canvas before adding or editing frames. Pick one agent_name and pass it on every call; set_status says what you are working on.
 - HUMAN FEEDBACK blocks in tool results are requests from people on the canvas: handle them before your own plan.
@@ -508,8 +508,8 @@ export function buildMcpServer(owner?: string, ownerId?: string, clientName?: st
     'get_guide',
     {
       title: 'Read the K17 agent guide',
-      description: `Read the K17 agent guide. Call with topic "doop-instructions" ONCE before using other K17 tools (the main guide: review checkpoints, the brief, streaming, frames, tokens, components, design quality, etiquette), and again if a long conversation may have compressed it. Other topics, to load when a task needs one: ${GUIDE_TOPICS.filter(
-        (topic) => topic !== 'doop-instructions',
+      description: `Read the K17 agent guide. Call with topic "k17-instructions" ONCE before using other K17 tools (the main guide: review checkpoints, the brief, streaming, frames, tokens, components, design quality, etiquette), and again if a long conversation may have compressed it. Other topics, to load when a task needs one: ${GUIDE_TOPICS.filter(
+        (topic) => topic !== 'k17-instructions',
       )
         .map((topic) => `"${topic}" (${GUIDE_TOPIC_SUMMARIES[topic]})`)
         .join('; ')}.`,

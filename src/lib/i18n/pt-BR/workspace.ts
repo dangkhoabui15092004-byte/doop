@@ -149,21 +149,21 @@ export const workspace: Catalog['workspace'] = {
   deleteConfirmDescription: 'Os canvases voltam aos donos e a assinatura termina agora. Isso não pode ser desfeito.',
 
   codexManual: 'Rode isto em um terminal com o Codex CLI instalado:',
-  codexAdding: 'Adicionando o Doop…',
+  codexAdding: 'Adicionando o K17…',
   codexAdded: 'Adicionado ao Codex',
   codexAdd: 'Adicionar ao Codex',
-  codexConfigured: 'O Doop está configurado. Abra um novo chat do Codex e entre no Doop quando for solicitado.',
-  codexUpdateDesktop: 'Atualize o Doop Desktop para adicionar o Codex direto, ou use a configuração manual abaixo.',
-  openDesktop: 'Abrir o Doop Desktop',
+  codexConfigured: 'O K17 está configurado. Abra um novo chat do Codex e entre no K17 quando for solicitado.',
+  codexUpdateDesktop: 'Atualize o K17 Desktop para adicionar o Codex direto, ou use a configuração manual abaixo.',
+  openDesktop: 'Abrir o K17 Desktop',
   codexNeedsDesktop:
-    'Requer o app desktop do Doop atualizado. Clique em Adicionar ao Codex lá para concluir. Se o app não abrir, use a configuração manual abaixo.',
+    'Requer o app desktop do K17 atualizado. Clique em Adicionar ao Codex lá para concluir. Se o app não abrir, use a configuração manual abaixo.',
 
   claudeOpening: 'Abrindo o Claude…',
   claudeOpenAgain: 'Abrir o Claude de novo',
   claudeAdd: 'Adicionar ao Claude',
   claudeNeedsDesktop:
-    'Abra este servidor em um app desktop do Doop atualizado para adicionar o Claude direto. No navegador, você pode usar a instalação manual abaixo.',
-  claudeConfirm: 'Confirme a instalação no Claude e depois aprove o login no Doop.',
+    'Abra este servidor em um app desktop do K17 atualizado para adicionar o Claude direto. No navegador, você pode usar a instalação manual abaixo.',
+  claudeConfirm: 'Confirme a instalação no Claude e depois aprove o login no K17.',
   installManually: 'Instalar manualmente',
   downloadExtension: 'Baixe a extensão',
   claudeManualOpen: ' e abra com o Claude Desktop. Defina',
@@ -175,5 +175,5 @@ export const workspace: Catalog['workspace'] = {
   cursorHelpBefore: 'Se o Cursor não abrir, abra o painel',
   cursorHelpMiddle: 'e adicione um servidor MCP personalizado. Mescle a entrada',
   cursorHelpAfter:
-    'na sua configuração MCP, mantendo os servidores existentes. Se o Doop já estiver conectado por um plugin, use essa conexão.',
+    'na sua configuração MCP, mantendo os servidores existentes. Se o K17 já estiver conectado por um plugin, use essa conexão.',
 }
