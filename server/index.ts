@@ -3789,6 +3789,9 @@ function takeImportSlot(userId: string): boolean {
   return true
 }
 
+import { createFigmaRouter } from './figmaImport.ts'
+app.use(createFigmaRouter({ requireCanvas }))
+
 app.post('/api/canvases/:id/import/discover', async (req, res) => {
   if (!requireCanvas(req, res, req.params.id, 'edit')) return
   try {

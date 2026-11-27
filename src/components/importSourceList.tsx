@@ -13,6 +13,12 @@ export function importSources(t: Translate = translate): ImportSource[] {
       blurb: t('panels.importWebsiteBlurb'),
       icon: <AppIcon brand="website" />,
     },
+    {
+      id: 'figma',
+      title: 'Figma',
+      blurb: 'Kết nối bằng Client ID & Secret để kéo trực tiếp frame từ Figma',
+      icon: <AppIcon brand="figma" />,
+    },
     ...clientIntegrations
       .filter((i) => i.ImportSection && i.importSource)
       .map((i) => ({ id: i.id, ...i.importSource! })),

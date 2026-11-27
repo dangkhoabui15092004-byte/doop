@@ -64,6 +64,7 @@ import { RepoAgentGuide, type RepoGuideState } from '../components/RepoAgentGuid
 import { pageFrames } from '../../shared/pages'
 import type { Frame, GithubImportRunner } from '../../shared/types'
 import { ImportStepFooter, ImportStepHeader, SourcePicker } from '../components/ImportSources'
+import { FigmaImportSection } from '../components/FigmaImportSection'
 import { importSources } from '../components/importSourceList'
 import { clientIntegrations } from '../integrations'
 import { PresentMode } from '../components/PresentMode'
@@ -1933,6 +1934,8 @@ function ImportModal({
                   </Button>
                 </ImportStepFooter>
               </>
+            ) : source === 'figma' ? (
+              <FigmaImportSection canvasId={canvasId} onBack={() => setSource(null)} onImported={onClose} />
             ) : source === 'liveapp' ? (
               <SyncKeysSection canvasId={canvasId} onBack={() => setSource(null)} />
             ) : source === 'github' ? (
