@@ -83,6 +83,7 @@ function workspaceOf(scope: Scope): string | undefined {
 export function Home() {
   const [canvases, setCanvases] = useState<CanvasMeta[] | null>(null)
   const [workspaces, setWorkspaces] = useState<WorkspaceSummary[]>([])
+  const [wsShareCopied, setWsShareCopied] = useState(false)
   /* an empty list is an answer too: someone removed from their last workspace */
   const [workspacesLoaded, setWorkspacesLoaded] = useState(false)
   const [scope, setScope] = useState<Scope>(() => {
@@ -342,6 +343,26 @@ export function Home() {
       <DashMain className="[background:var(--paper)]">
         <DashHeader variant="bare">
           <span className="flex-1" />
+          {currentWorkspace && currentWorkspace.role !== 'member' && (
+            <Button
+              variant="default"
+              size="bar"
+              onClick={async () => {
+                try {
+                  const res = await fetch(`/api/workspaces/${currentWorkspace.id}/invite-link`, {
+                    credentials: 'include',
+                  })
+                  if (!res.ok) return
+                  const data = (await res.json()) as { url: string }
+                  await navigator.clipboard.writeText(data.url)
+                  setWsShareCopied(true)
+                  setTimeout(() => setWsShareCopied(false), 2000)
+                } catch {}
+              }}
+            >
+              {wsShareCopied ? 'Đã copy link!' : 'Chia sẻ Workspace'}
+            </Button>
+          )}
           <Button variant="default" size="bar" disabled={starting} onClick={() => setImporting(true)}>
             <UploadIcon width={15} height={15} className="text-ink-soft" /> {t('home.import')}
           </Button>
