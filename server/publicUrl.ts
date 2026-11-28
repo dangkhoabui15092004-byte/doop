@@ -303,7 +303,7 @@ export async function guardPublicPageRequests(
           return
         }
         parsePublicHttpUrl(raw)
-        if (offNetwork) {
+        if (offNetwork || isLocalhostAllowed()) {
           await request.continue()
           return
         }
