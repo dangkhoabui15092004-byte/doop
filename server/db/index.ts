@@ -35,8 +35,8 @@ export async function initDb(): Promise<void> {
     const cleanUrl = needsSsl ? url.replace(/([?&])sslmode=[^&]*&?/i, '$1').replace(/[?&]$/, '') : url
     const pool = new pg.Pool({
       connectionString: cleanUrl,
-      max: 10,
-      idleTimeoutMillis: 20_000,
+      max: 4,
+      idleTimeoutMillis: 15_000,
       connectionTimeoutMillis: 15_000,
       keepAlive: true,
       ...(needsSsl ? { ssl: { rejectUnauthorized: false } } : {}),
