@@ -153,19 +153,29 @@ async function fetchResolvedPublicUrl(
   resolved: ResolvedPublicUrl,
   init: Omit<UndiciRequestInit, 'dispatcher'> = {},
 ): Promise<Response> {
+  if ('Bun' in globalThis) {
+    return (await fetch(resolved.url, {
+      ...(init as RequestInit),
+      redirect: (init.redirect as RequestRedirect) ?? 'manual',
+    })) as unknown as Response
+  }
   const dispatcher = new Agent({
     connect: { lookup: createPinnedLookup(resolved.url.hostname.replace(/^\[|\]$/g, ''), resolved.addresses) },
     connections: 1,
     pipelining: 0,
   })
+  const closeDispatcher = () => {
+    const fn = (dispatcher as { close?: () => Promise<void> }).close
+    return typeof fn === 'function' ? fn.call(dispatcher).catch(() => {}) : Promise.resolve()
+  }
   try {
     const response = await undiciFetch(resolved.url, { ...init, dispatcher })
     /* Graceful close waits for the returned body to be consumed, then drops
        the one-request pool instead of caching attacker-selected origins. */
-    void dispatcher.close()
+    void closeDispatcher()
     return response as unknown as Response
   } catch (error) {
-    await dispatcher.close().catch(() => {})
+    await closeDispatcher()
     throw error
   }
 }
