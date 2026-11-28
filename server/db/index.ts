@@ -36,7 +36,13 @@ export async function initDb(): Promise<void> {
     const pool = new pg.Pool({
       connectionString: cleanUrl,
       max: 10,
+      idleTimeoutMillis: 20_000,
+      connectionTimeoutMillis: 15_000,
+      keepAlive: true,
       ...(needsSsl ? { ssl: { rejectUnauthorized: false } } : {}),
+    })
+    pool.on('error', (err) => {
+      console.error('[db] idle postgres pool error (auto-recovered):', err.message)
     })
     db = drizzle(pool, { schema })
     const { migrate } = await import('drizzle-orm/node-postgres/migrator')
